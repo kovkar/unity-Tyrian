@@ -156,6 +156,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  shipArea:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 10, y: 0, z: 10}
 --- !u!136 &22335562
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -238,7 +241,7 @@ Transform:
   m_GameObject: {fileID: 22335560}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: -9}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 2, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -383,9 +386,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba52888fc9ba7468c618fcc88888fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounds:
+  playAreaBounds:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 10, y: 0, z: 10}
+    m_Extent: {x: 20, y: 0, z: 10}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0

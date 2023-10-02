@@ -6,6 +6,8 @@ public class ShipContoller : MonoBehaviour
 {
     public float speed;
 
+    public Bounds shipArea;
+
     private CapsuleCollider collider;
 
     void Awake()
@@ -42,9 +44,21 @@ public class ShipContoller : MonoBehaviour
             pos.z -= speed * Time.deltaTime;
         }
 
-        // limit movement of the object to an area defined in env. properties
-        pos = EnvironmentProps.Instance.IntoArea(pos, collider.radius);
+        transform.position = this.ClipIntoShipArea(pos);
+    }
 
-        transform.position = pos;
+    private Vector3 ClipIntoShipArea(Vector3 pos)
+    {
+        Vector3 result = pos;
+        float dx = transform.localScale.x;
+        float dz = transform.localScale.y;
+
+        if      (result.x - dx < shipArea.min.x) { result.x = shipArea.min.x + dx; }
+        else if (result.x + dx > shipArea.max.x) { result.x = shipArea.max.x - dx; }
+
+        if      (result.z - dz < shipArea.min.z) { result.z = shipArea.min.z + dz; }
+        else if (result.z + dz > shipArea.max.z) { result.z = shipArea.max.z - dz; }
+
+        return result;
     }
 }

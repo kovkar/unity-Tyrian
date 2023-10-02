@@ -6,7 +6,7 @@ public class EnvironmentProps : MonoBehaviour
 {
     public static EnvironmentProps Instance { get; private set; }
 
-    public Bounds bounds;
+    public Bounds playAreaBounds;
 
     public void Awake()
     {
@@ -35,10 +35,10 @@ public class EnvironmentProps : MonoBehaviour
 
     }
 
-    public float minX() { return bounds.min.x; }
-    public float maxX() { return bounds.max.x; }
-    public float minZ() { return bounds.min.z; }
-    public float maxZ() { return bounds.max.z; }
+    public float minX() { return playAreaBounds.min.x; }
+    public float maxX() { return playAreaBounds.max.x; }
+    public float minZ() { return playAreaBounds.min.z; }
+    public float maxZ() { return playAreaBounds.max.z; }
 
     public Vector3 IntoArea(Vector3 pos, float dx)
     {
