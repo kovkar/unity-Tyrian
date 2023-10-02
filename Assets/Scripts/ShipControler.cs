@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SphereControler : MonoBehaviour
+public class ShipContoller : MonoBehaviour
 {
     public float speed;
 
-    private SphereCollider collider;
+    private CapsuleCollider collider;
 
     void Awake()
     {
-        collider = GetComponent<SphereCollider>();
+        collider = GetComponent<CapsuleCollider>();
         //here should be some null check...
     }
 
@@ -32,6 +32,14 @@ public class SphereControler : MonoBehaviour
         if (Input.GetKey(KeyCode.D))
         {
             pos.x += speed * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.W))
+        {
+            pos.z += speed * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            pos.z -= speed * Time.deltaTime;
         }
 
         // limit movement of the object to an area defined in env. properties
