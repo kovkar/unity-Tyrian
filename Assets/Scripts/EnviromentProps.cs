@@ -6,8 +6,7 @@ public class EnvironmentProps : MonoBehaviour
 {
     public static EnvironmentProps Instance { get; private set; }
 
-    public float minX;
-    public float maxX;
+    public Bounds bounds;
 
     public void Awake()
     {
@@ -35,12 +34,22 @@ public class EnvironmentProps : MonoBehaviour
     {
         
     }
-    
+
+    public float minX() { return bounds.min.x; }
+    public float maxX() { return bounds.max.x; }
+    public float minZ() { return bounds.min.z; }
+    public float maxZ() { return bounds.max.z; }
+
     public Vector3  IntoArea(Vector3 pos, float dx)
     {
         Vector3 result = pos;
-        result.x = result.x - dx < minX ? minX + dx : result.x;
-        result.x = result.x + dx > maxX ? maxX - dx : result.x;
+        result.x = result.x - dx < minX() ? minX() + dx : result.x;
+        result.x = result.x + dx > maxX() ? maxX() - dx : result.x;
         return result;
+    }
+
+    public bool EscapedBelow(Vector3 pos, float dz)
+    {
+        return pos.z + dz < minZ();
     }
 }
