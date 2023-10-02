@@ -388,7 +388,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playAreaBounds:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 20, y: 0, z: 10}
+    m_Extent: {x: 20, y: 0, z: 12}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0

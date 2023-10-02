@@ -33,16 +33,19 @@ public class MainGun : MonoBehaviour
         if (_delay > 0.0f)
             return;
 
-        // create new instance of prefab at given position
-        var projectileGO = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-        var projectileContr = projectileGO.GetComponent<ProjectileController>();
-        if (projectileContr != null)
+        if (Input.GetKey(KeyCode.Space))
         {
-            projectileContr.Set(_projectileSpeed, _projectileRadius);
-        }
-        else
-        {
-            Debug.LogError("Missing ProjectilCOntroller component");
+            // create new instance of prefab at given position
+            var projectileGO = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+            var projectileContr = projectileGO.GetComponent<ProjectileController>();
+            if (projectileContr != null)
+            {
+                projectileContr.Set(_projectileSpeed, _projectileRadius);
+            }
+            else
+            {
+                Debug.LogError("Missing ProjectilCOntroller component");
+            }
         }
 
         // set new delay for next spawn
