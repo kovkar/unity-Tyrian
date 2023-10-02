@@ -26,13 +26,13 @@ public class EnvironmentProps : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public float minX() { return bounds.min.x; }
@@ -40,7 +40,7 @@ public class EnvironmentProps : MonoBehaviour
     public float minZ() { return bounds.min.z; }
     public float maxZ() { return bounds.max.z; }
 
-    public Vector3  IntoArea(Vector3 pos, float dx)
+    public Vector3 IntoArea(Vector3 pos, float dx)
     {
         Vector3 result = pos;
         result.x = result.x - dx < minX() ? minX() + dx : result.x;
@@ -51,5 +51,11 @@ public class EnvironmentProps : MonoBehaviour
     public bool EscapedBelow(Vector3 pos, float dz)
     {
         return pos.z + dz < minZ();
+    }
+
+    public bool EscapedFromTop(Vector3 pos, float dz)
+    {
+        return pos.z - dz > maxZ();
+
     }
 }
