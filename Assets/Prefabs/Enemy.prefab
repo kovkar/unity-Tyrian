@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 3100116415138757496}
   - component: {fileID: 6272104695347596621}
   - component: {fileID: 5574094327329219498}
-  - component: {fileID: 333147478251211942}
   - component: {fileID: 6844976112369332932}
+  - component: {fileID: 8411374673414529555}
+  - component: {fileID: 333147478251211942}
   - component: {fileID: -2239343847920739967}
   m_Layer: 6
   m_Name: Enemy
@@ -64,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 7abccd34d7ec67b41b89b7ebbf1eeb2f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -86,6 +87,34 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6844976112369332932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6438753732462677934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9c5b8f44cb00a54587b6ab89e877ad2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 20
+--- !u!114 &8411374673414529555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6438753732462677934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa56232df0ecddf49bb13c57f8cf1e02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 1223268150625976646, guid: 7b79fd257235b4d4fbd72c4d7c6b94b2, type: 3}
+  delayMin: 3
+  delayMax: 5
 --- !u!65 &333147478251211942
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -107,19 +136,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6844976112369332932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6438753732462677934}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9c5b8f44cb00a54587b6ab89e877ad2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 20
 --- !u!54 &-2239343847920739967
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -18,11 +18,6 @@ public class ProjectileController : MonoBehaviour
     {
         // move projectile down
         transform.position += new Vector3(0, 0, _speed * Time.deltaTime);
-        // destroy it on border
-        if (EnvironmentProps.Instance.EscapedFromTop(transform.position, _radius))
-        {
-            Destroy(this.gameObject);
-        }
     }
 
     // used by factory to set paramters

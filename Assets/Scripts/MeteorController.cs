@@ -19,12 +19,6 @@ public class MeteorController : MonoBehaviour
          transform.position += new Vector3(0, 0, -_speed * Time.deltaTime);
     }
 
-    void OnTriggerExit(Collider other)
-    {
-        // Destroy meteors that leaves the play area
-        if (other.gameObject == EnvironmentProps.Instance.gameObject) { Destroy(this.gameObject); }
-    }
-
     // used by factory to set paramters
     public void Set(float speed, float radius)
     {
