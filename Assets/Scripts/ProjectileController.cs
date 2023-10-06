@@ -20,6 +20,13 @@ public class ProjectileController : MonoBehaviour
         transform.position += new Vector3(0, 0, _speed * Time.deltaTime);
     }
 
+    // destroy everything hitted by projectile,
+    // what can be hitted defined by collision matrix
+    private void OnTriggerEnter(Collider other)
+    {
+        Destroy(other.gameObject);
+    }
+
     // used by factory to set paramters
     public void Set(float speed, float radius)
     {

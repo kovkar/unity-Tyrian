@@ -18,4 +18,11 @@ public class EnemyProjectileController : MonoBehaviour
     {
         transform.position -= new Vector3(0, 0, _speed * Time.deltaTime);
     }
+
+    // destroy everything hitted by projectile,
+    // what can be hitted defined by collision matrix
+    private void OnTriggerEnter(Collider other)
+    {
+        Destroy(other.gameObject);
+    }
 }

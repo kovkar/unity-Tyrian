@@ -47,6 +47,12 @@ public class ShipContoller : MonoBehaviour
         transform.position = this.ClipIntoShipArea(pos);
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        Destroy(this.gameObject);
+        Debug.LogWarning("GAME OVER: killed by " + collision.gameObject.name);
+    }
+
     private Vector3 ClipIntoShipArea(Vector3 pos)
     {
         Vector3 result = pos;

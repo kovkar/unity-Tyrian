@@ -45,7 +45,4 @@ public class EnemyPrefab : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-
-
-
 }
