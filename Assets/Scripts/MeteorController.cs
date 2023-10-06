@@ -15,14 +15,14 @@ public class MeteorController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    { 
+         transform.position += new Vector3(0, 0, -_speed * Time.deltaTime);
+    }
+
+    void OnTriggerExit(Collider other)
     {
-        // move meteor down
-        transform.position += new Vector3(0, 0, -_speed * Time.deltaTime);
-        // destroy it on border
-        if (EnvironmentProps.Instance.EscapedBelow(transform.position, _radius))
-        {
-            Destroy(this.gameObject);
-        }
+        // Destroy meteors that leaves the play area
+        if (other.gameObject == EnvironmentProps.Instance.gameObject) { Destroy(this.gameObject); }
     }
 
     // used by factory to set paramters

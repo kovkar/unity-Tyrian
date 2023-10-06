@@ -8,12 +8,12 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PlayAreaColider
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Enemies
+  - Meteors
+  - Player
   - 
   - 
   - 

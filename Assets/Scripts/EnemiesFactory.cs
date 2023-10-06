@@ -19,7 +19,23 @@ public class EnemiesFacotry : MonoBehaviour
 
     private int enemiesCount;
 
-    // Start is called before the first frame update
+    public static EnemiesFacotry Instance { get; private set; }
+
+    public void Awake()
+    {
+        // Check, if we do not have any instance yet.
+        if (Instance == null)
+        {
+            // 'this' is the first instance created => save it.
+            Instance = this;
+        }
+        else if (Instance != this)
+        {
+            // Destroy 'this' object as there exist another instance
+            Destroy(this.gameObject);
+        }
+    }
+
     void Start()
     {
         _spawnDelay = 0;
@@ -43,4 +59,6 @@ public class EnemiesFacotry : MonoBehaviour
 
         _spawnDelay = spawnDelay;
     }
+
+    public void decreaseEnemyCountByOne() { enemiesCount -= 1; }
 }
