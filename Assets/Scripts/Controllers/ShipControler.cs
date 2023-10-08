@@ -22,8 +22,12 @@ public class ShipContoller : MonoBehaviour
         
     }
 
-    // Update is called once per frame
     void Update()
+    {
+        updateShipPosition();
+    }
+
+    private void updateShipPosition()
     {
         Vector3 pos = transform.position;
 
@@ -47,7 +51,8 @@ public class ShipContoller : MonoBehaviour
         transform.position = this.ClipIntoShipArea(pos);
     }
 
-    void OnCollisionEnter(Collision collision)
+    // destroy ship if hitted, what can hit ship defined by collision matrix
+    public void OnCollisionEnter(Collision collision)
     {
         Destroy(this.gameObject);
         Debug.LogWarning("GAME OVER: killed by " + collision.gameObject.name);
