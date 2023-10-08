@@ -6,7 +6,7 @@
 ##### **2.10.23 [Monday]**
 - ship movement, projectiles, meteor rain (seminar examples) [2.5h]
 - shooting with space, play and ship movement area restrictions multiple levels/scenes, tunning game parameters (homework) [1.5h]
-###### total time: 4h hours
+###### total time: 4 hours
 
 ## Milestone 02:
 ##### **6.10.23 [Friday]**
@@ -16,4 +16,5 @@
 - playing with explode and disolve shader for meteors, testing in experiment branch (VFX) {3h}
 ##### **8.10.23 [Sunday]**
 - fixing collisions, adjusting levels, cleaning assets, slight code refactoring (homework) [1h]
-###### total time: 11 hours ([4]/{7}) 
+- **added VFX: Exploding meteors** refactoring ExpandAndDisolve shader, creating animation through its paramteres, adding it to meteor prefab, updating physics. {2h}
+###### total time: 13 hours [4 milestone]/{9 work above}
