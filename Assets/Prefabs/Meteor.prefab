@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 6267870868257080187}
   - component: {fileID: 480151606776990840}
   - component: {fileID: 2427100567727436814}
+  - component: {fileID: 6108954080565565599}
   - component: {fileID: 3301565720171177993}
-  - component: {fileID: -4615088586918487246}
   - component: {fileID: -410538316504288593}
   m_Layer: 7
   m_Name: Meteor
@@ -86,6 +86,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6108954080565565599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3752988500167105248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44601cf863fbd384e8a9268d2d4ec6da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &3301565720171177993
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -107,18 +119,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-4615088586918487246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3752988500167105248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44601cf863fbd384e8a9268d2d4ec6da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &-410538316504288593
 Rigidbody:
   m_ObjectHideFlags: 0

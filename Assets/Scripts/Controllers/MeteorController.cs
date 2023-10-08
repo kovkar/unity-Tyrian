@@ -8,6 +8,11 @@ public class MeteorController : MonoBehaviour
     private float _speed = 20.0f;
     private float _radius = 1.0f;
 
+    private void Start()
+    { 
+
+    }
+
     void Update()
     { 
          transform.position += new Vector3(0, 0, -_speed * Time.deltaTime);

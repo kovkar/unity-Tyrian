@@ -7,7 +7,10 @@ public class ProjectileController : MonoBehaviour
     private float _speed;
     private float _radius;
 
-    void Start() {}
+    void Start()
+    {
+        
+    }
 
     void Update()
     {
