@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MeteorController : MonoBehaviour
@@ -7,22 +8,15 @@ public class MeteorController : MonoBehaviour
     private float _speed = 20.0f;
     private float _radius = 1.0f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    void Update()
+    { 
+         transform.position += new Vector3(0, 0, -_speed * Time.deltaTime);
     }
 
-    // Update is called once per frame
-    void Update()
+    // destroy meteor on hit, what can be hit by meteor defined by collision matrix
+    public void OnCollisionEnter(Collision collision)
     {
-        // move meteor down
-        transform.position += new Vector3(0, 0, -_speed * Time.deltaTime);
-        // destroy it on border
-        if (EnvironmentProps.Instance.EscapedBelow(transform.position, _radius))
-        {
-            Destroy(this.gameObject);
-        }
+        Destroy(this.gameObject);
     }
 
     // used by factory to set paramters
@@ -32,5 +26,4 @@ public class MeteorController : MonoBehaviour
         _radius = radius;
         transform.localScale = new Vector3(_radius, _radius, _radius);
     }
-
 }

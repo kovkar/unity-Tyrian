@@ -7,25 +7,20 @@ public class ProjectileController : MonoBehaviour
     private float _speed;
     private float _radius;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    void Start() {}
 
-    // Update is called once per frame
     void Update()
     {
-        // move projectile down
         transform.position += new Vector3(0, 0, _speed * Time.deltaTime);
-        // destroy it on border
-        if (EnvironmentProps.Instance.EscapedFromTop(transform.position, _radius))
-        {
-            Destroy(this.gameObject);
-        }
     }
 
-    // used by factory to set paramters
+    // destroy projectile on hit, what can be hit by projectile defined by collision matrix
+    public void OnCollisionEnter(Collision collision)
+    {
+        Destroy(this.gameObject);
+    }
+
+    // used by gun to set paramters
     public void Set(float speed, float radius)
     {
         _speed = speed;
