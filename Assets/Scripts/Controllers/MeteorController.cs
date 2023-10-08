@@ -7,10 +7,13 @@ public class MeteorController : MonoBehaviour
 {
     private float _speed = 20.0f;
     private float _radius = 1.0f;
+    private Animation anim;
+    private Rigidbody body;
 
     private void Start()
-    { 
-
+    {
+        anim = this.gameObject.GetComponent<Animation>();
+        body = this.gameObject.GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -18,11 +21,14 @@ public class MeteorController : MonoBehaviour
          transform.position += new Vector3(0, 0, -_speed * Time.deltaTime);
     }
 
-    // destroy meteor on hit, what can be hit by meteor defined by collision matrix
+    // what can be hit by meteor defined by collision matrix
     public void OnCollisionEnter(Collision collision)
     {
-        Destroy(this.gameObject);
+        anim.Play();
+        Destroy(body);
     }
+
+    private void destroyAfterAnimation() { Destroy(this.gameObject); }
 
     // used by factory to set paramters
     public void Set(float speed, float radius)
