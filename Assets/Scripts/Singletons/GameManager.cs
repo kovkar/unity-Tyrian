@@ -38,10 +38,15 @@ public class GameManager : MonoBehaviour
         if (Input.GetKey(KeyCode.N)) { loadNextLevel(); }
     }
 
-    void loadNextLevel() 
+    private void loadNextLevel() 
     {
         int currentLevelIndex = Array.IndexOf(listOfScenesNames, SceneManager.GetActiveScene().name);
         if (currentLevelIndex + 1 >= listOfScenesNames.Length) { Debug.LogWarning("No more levels!"); }
         else { SceneManager.LoadScene(listOfScenesNames[currentLevelIndex + 1]); }
+    }
+
+    public void endGame()
+    {
+        SceneManager.LoadScene("GameOverScene");
     }
 }

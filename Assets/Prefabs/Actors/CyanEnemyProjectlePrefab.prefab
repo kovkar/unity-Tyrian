@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4573041163966619951}
   - component: {fileID: 2715859612885201716}
   m_Layer: 9
-  m_Name: OrangeEnemyProjectlePrefab
+  m_Name: CyanEnemyProjectlePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bd5a727f05093d469f56b3336e8bc14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 7
+  speed: 10
 --- !u!135 &4573041163966619951
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -172,7 +172,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7abccd34d7ec67b41b89b7ebbf1eeb2f, type: 2}
+  - {fileID: 2100000, guid: 1e80476d568e04b47ae83fb15442b800, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
