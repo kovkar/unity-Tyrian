@@ -16,6 +16,4 @@ public class MeteorActor : Actor
     }
 
     public void ExpandAndDisolveAnimationEnded() { Destroy(this); }
-
-
 }

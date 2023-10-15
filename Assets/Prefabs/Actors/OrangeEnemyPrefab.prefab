@@ -57,7 +57,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1222467845577260723}
   - component: {fileID: 5387674842412211685}
-  - component: {fileID: 6078547346625583170}
+  - component: {fileID: -3841328898899952447}
   - component: {fileID: 7557319637314944657}
   - component: {fileID: 8013286189394229904}
   - component: {fileID: 2478039307509750771}
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
---- !u!114 &6078547346625583170
+--- !u!114 &-3841328898899952447
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4839242552867615721}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d94bc697f4f6e24aa74eb753a7ac28b, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d508fb14612b5645b1a62fa0a0e1a6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 6
@@ -359,7 +359,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6358792032975716112, guid: 69667be7e4135944ea0f4ac5de18bca7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6358792032975716112, guid: 69667be7e4135944ea0f4ac5de18bca7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
