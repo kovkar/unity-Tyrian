@@ -43,7 +43,7 @@ public class Actor : MonoBehaviour
     /// Method handling collisions between <c>Actor</c>'s. 
     /// When Actors 'A' and 'B' collide, health of 'A' is decreased by damage of 'B'. 
     /// </summary>
-    private void OnCollisionEnter(Collision collision)
+    public virtual void OnCollisionEnter(Collision collision)
     {
         // check if other game object is Actor
         Actor otherActor = collision.gameObject.GetComponent<Actor>();
@@ -83,6 +83,9 @@ public class Actor : MonoBehaviour
     {
         this.healthBar = healthbar;
     }
+
+    public int getDamage() { return this.damage; }
+    public int getHealth() { return this.health; }
 
 
     /// <summary>

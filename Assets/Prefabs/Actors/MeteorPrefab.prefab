@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8794440066155771795}
   - component: {fileID: 1275792024296132145}
   - component: {fileID: 5739235436826539414}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: MeteorPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}

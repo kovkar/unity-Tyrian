@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 4257760665327110762}
   - component: {fileID: 3757798157710134332}
   - component: {fileID: 6487008517987406474}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: MainGunProjectileActor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
@@ -9,10 +10,20 @@ public class EnemyController : MonoBehaviour
 
     private int movingDirectionX = -1;
 
+    private GameObject body;
+
+    private void Start()
+    {
+        var child = this.transform.Find("Body");
+        if (child != null) { this.body = child.GameObject(); }
+        else { Debug.LogWarning(this.gameObject.name + "does not have child with name 'Body'."); }
+    }
+
     void Update()
     {
         checkDirectionChange();
         this.transform.position += new Vector3(speed * movingDirectionX * Time.deltaTime, 0, 0);
+        body.transform.Rotate(0, 180 * Time.deltaTime * movingDirectionX, 0, Space.Self);
     }
 
     // Chcecks if enemy is touching x-axis play area edge

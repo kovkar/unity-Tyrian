@@ -61,7 +61,7 @@ GameObject:
   - component: {fileID: 7557319637314944657}
   - component: {fileID: 8013286189394229904}
   - component: {fileID: 2478039307509750771}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: OrangeEnemyPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,7 +200,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6314049411073684701}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -335,7 +335,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6358792032975716112, guid: 69667be7e4135944ea0f4ac5de18bca7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.8
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: 6358792032975716112, guid: 69667be7e4135944ea0f4ac5de18bca7, type: 3}
       propertyPath: m_LocalRotation.w
