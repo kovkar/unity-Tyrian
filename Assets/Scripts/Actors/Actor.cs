@@ -53,7 +53,7 @@ public class Actor : MonoBehaviour
         this.TakeDamage(otherActor.damage);
 
         // update health bar if attached
-        if (healthBar != null & maxHealth != 0) { healthBar.DecreaseBy( (float) otherActor.damage / maxHealth); }
+        if (healthBar != null) { this.DecreaseHealthBar(otherActor.damage); }
     }
 
     /// <summary>
@@ -64,6 +64,18 @@ public class Actor : MonoBehaviour
     {
         health -= damage;
         if (health <= 0) { SelfDestroy(); }
+    }
+
+    /// <summary>
+    /// Base method for decreasing attached healthbar.
+    /// </summary>
+    /// <param name="damage">damage done to the <c>Actor</c></param>
+    public virtual void DecreaseHealthBar(int damage)
+    {
+        if (maxHealth == 0) { return; }
+
+        float percAmount = (float) damage / maxHealth;
+        healthBar.DecreaseBy(percAmount);
     }
 
     /// <summary>
