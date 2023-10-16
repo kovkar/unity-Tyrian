@@ -347,9 +347,9 @@ GameObject:
   - component: {fileID: 552756076}
   - component: {fileID: 552756077}
   - component: {fileID: 552756082}
+  - component: {fileID: 552756081}
   - component: {fileID: 552756079}
   - component: {fileID: 552756078}
-  - component: {fileID: 552756081}
   m_Layer: 6
   m_Name: Player Ship
   m_TagString: Untagged
