@@ -1,29 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class EnemyPrefab : MonoBehaviour
+public class EnemyController : MonoBehaviour
 {
-    private float _speed = 10.0f;
+    [SerializeField]
+    private float speed;
 
-    private int _movingDirectionX;
+    private int movingDirectionX = -1;
 
-    void Start()
+    private GameObject body;
+
+    private void Start()
     {
-        // initial x moving direction towards closer edge
-        _movingDirectionX = (this.transform.position.x > EnvironmentProps.Instance.playAreaBounds.center.x) ? 1 : -1;
+        var child = this.transform.Find("Body");
+        if (child != null) { this.body = child.GameObject(); }
+        else { Debug.LogWarning(this.gameObject.name + "does not have child with name 'Body'."); }
     }
 
     void Update()
     {
         checkDirectionChange();
-        this.transform.position += new Vector3(_speed * _movingDirectionX * Time.deltaTime, 0, 0);
-    }
-
-    // destroy enemy on hit, what can be hit by enemy defined by collision matrix
-    public void OnCollisionEnter(Collision collision)
-    {
-        Destroy(this.gameObject);
+        this.transform.position += new Vector3(speed * movingDirectionX * Time.deltaTime, 0, 0);
+        body.transform.Rotate(0, 180 * Time.deltaTime * movingDirectionX, 0, Space.Self);
     }
 
     // Chcecks if enemy is touching x-axis play area edge
@@ -35,13 +35,10 @@ public class EnemyPrefab : MonoBehaviour
 
         if (pos.x >= maxX | pos.x <= minX)
         {
-            _movingDirectionX *= -1;                        // change its x direction
+            movingDirectionX *= -1;                         // change its x direction
             pos.z -= this.transform.localScale.z + 0.2f;    // move one row closer to the ship
             pos.x = (pos.x <= minX) ? minX : maxX;          // clip x into play area
             this.transform.position = pos;
         }
     }
-
-    // used by factory to set paramters
-    public void Set(float speed, float radius) { _speed = speed; }
 }

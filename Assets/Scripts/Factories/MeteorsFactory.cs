@@ -44,7 +44,7 @@ public class MeteorsFactory : MonoBehaviour
 
         // create new instance of prefab at given position
         var meteorGO = Instantiate(meteorPrefab, new Vector3(x, 0, z), Quaternion.identity);
-        var meteorContr = meteorGO.GetComponent<MeteorController>();
+        var meteorContr = meteorGO.GetComponentInChildren<MeteorController>();
         if (meteorContr != null)
         {
             meteorContr.Set(_meteorSpeed, _meteorRadius);

@@ -37,7 +37,7 @@ public class MainGun : MonoBehaviour
         {
             // create new instance of prefab at given position
             var projectileGO = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-            var projectileContr = projectileGO.GetComponent<ProjectileController>();
+            var projectileContr = projectileGO.GetComponentInChildren<ProjectileController>();
             if (projectileContr != null)
             {
                 projectileContr.Set(_projectileSpeed, _projectileRadius);

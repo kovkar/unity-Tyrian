@@ -9,20 +9,6 @@ public class ShipContoller : MonoBehaviour
 
     public Bounds shipArea;
 
-    private CapsuleCollider collider;
-
-    void Awake()
-    {
-        collider = GetComponent<CapsuleCollider>();
-        //here should be some null check...
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     void Update()
     {
         updateShipPosition();
@@ -50,13 +36,6 @@ public class ShipContoller : MonoBehaviour
         }
 
         transform.position = this.ClipIntoShipArea(pos);
-    }
-
-    // destroy ship if hitted, what can hit ship defined by collision matrix
-    public void OnCollisionEnter(Collision collision)
-    {
-        Destroy(this.gameObject);
-        Debug.LogWarning("GAME OVER: killed by " + collision.gameObject.name);
     }
 
     private Vector3 ClipIntoShipArea(Vector3 pos)

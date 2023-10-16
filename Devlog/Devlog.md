@@ -1,14 +1,13 @@
 # Tyrian Devlog
 ###### developer: Karol Kováč
-
-
-## Milestone 01:
+---
+### Milestone 01:
 ##### **2.10.23 [Monday]**
 - ship movement, projectiles, meteor rain (seminar examples) [2.5h]
 - shooting with space, play and ship movement area restrictions multiple levels/scenes, tunning game parameters (homework) [1.5h]
 ###### total time: 4 hours
-
-## Milestone 02:
+---
+### Milestone 02:
 ##### **6.10.23 [Friday]**
 - learning shader graph, creating expand and disolve shader for meteors (VFX) {4h}
 - game manager, enemies, collisions (homework) [3h]
@@ -16,5 +15,19 @@
 - playing with explode and disolve shader for meteors, testing in experiment branch (VFX) {3h}
 ##### **8.10.23 [Sunday]**
 - fixing collisions, adjusting levels, cleaning assets, slight code refactoring (homework) [1h]
-- **added VFX: Exploding meteors** refactoring ExpandAndDisolve shader, creating animation through its paramteres, adding it to meteor prefab, updating physics. {4h}
+- added **SHADER: Exploding meteors** refactoring ExpandAndDisolve shader, creating animation through its paramteres, adding it to meteor prefab, updating physics. {4h}
 ###### total time: 15 hours [4 milestone]/{11 work above}
+---
+### Milestone 03:
+##### **14.10.23 [Saturday]**
+- HealthBar class and UI: basic health bars [1h]
+- Actor class: collisions handling refactored, health and damage system, health bar updating [4h]
+##### **15.10.23 [Sunday]**
+- tunning health and damage system, creating custom Actor subclasses and healthbars [1h]
+- refactoring actor prefabs structure [2h]
+- levels: creating 3 types of enemies and 3 levels [1h]
+- Currencies class: credits and score system [1h]
+##### **16.10.23 [Monday]**
+- Cheats class: immortality cheat, finishing homework03 [2h]
+###### total time: 12 hours [12 milestone]
+---
