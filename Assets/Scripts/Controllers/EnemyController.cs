@@ -23,7 +23,6 @@ public class EnemyController : MonoBehaviour
     {
         checkDirectionChange();
         this.transform.position += new Vector3(speed * movingDirectionX * Time.deltaTime, 0, 0);
-        body.transform.Rotate(0, 180 * Time.deltaTime * movingDirectionX, 0, Space.Self);
     }
 
     // Chcecks if enemy is touching x-axis play area edge

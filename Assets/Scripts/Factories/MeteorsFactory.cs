@@ -43,7 +43,7 @@ public class MeteorsFactory : MonoBehaviour
         float z = EnvironmentProps.Instance.maxZ() + _meteorRadius;
 
         // create new instance of prefab at given position
-        var meteorGO = Instantiate(meteorPrefabs[Random.Range(0, meteorPrefabs.Length)], 
+        var meteorGO = Instantiate(meteorPrefabs[Random.Range(0, meteorPrefabs.Length-1)], 
                                    new Vector3(x, 0, z), Quaternion.identity);
         var meteorContr = meteorGO.GetComponentInChildren<MeteorController>();
         if (meteorContr != null)
