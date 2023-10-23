@@ -857,7 +857,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1910ac2eca46809438f56fba6751569a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meteorPrefab: {fileID: 163304835190003846, guid: 93bc5ded1527e1244b63e7d75a81b2d7, type: 3}
+  meteorPrefabs:
+  - {fileID: 2422907773745085996, guid: 9afb91a1caa88db4da77f48b1d8ce160, type: 3}
+  - {fileID: 2422907773745085996, guid: f6a2bed30854b06459c45043a7d855f8, type: 3}
+  - {fileID: 2422907773745085996, guid: aa90a2ed05b25b94a9a619c31807619a, type: 3}
+  - {fileID: 2422907773745085996, guid: 23d431eb8e2c98041aa13258b4007d8e, type: 3}
+  - {fileID: 2422907773745085996, guid: e9cde12b102b31f40995140923326d8d, type: 3}
+  - {fileID: 2422907773745085996, guid: 336f75f3339862c418b8e049c4bc1bc9, type: 3}
   delayMin: 0.5
   delayMax: 1
   _meteorRadius: 1.5
