@@ -14,9 +14,13 @@ public class MeteorsFactory : MonoBehaviour
     [SerializeField]
     private float delayMax;
     [SerializeField]
-    private float _meteorRadius;
+    private float _meteorRadiusMin;
     [SerializeField]
-    private float _meteorSpeed;
+    private float _meteorRadiusMax;
+    [SerializeField]
+    private float _meteorBaseSpeed;
+
+    private const float SPEED_MULTIPLIER = 1.0f;
     // delay from last spawn
     private float _delay;
 
@@ -34,6 +38,10 @@ public class MeteorsFactory : MonoBehaviour
 
         if (_delay > 0.0f)
             return;
+
+        // choose meteor radius and speed
+        float _meteorRadius = Random.Range(_meteorRadiusMin, _meteorRadiusMax);
+        float _meteorSpeed = (_meteorRadiusMin == _meteorRadiusMax) ? _meteorBaseSpeed : calculateMeteorSpeed(_meteorRadius);
 
         //choose position for new spawn
         //horizontal
@@ -57,6 +65,15 @@ public class MeteorsFactory : MonoBehaviour
 
         // set new delay for next spawn
         _delay = Random.Range(delayMin, delayMax);
+    }
+
+    // calculates speed from base speed adjusted based on meteor radius
+    private float calculateMeteorSpeed(float _meteorRadius) {
+        float radiusRangeSize = _meteorRadiusMax - _meteorRadiusMin;
+        float radiusPercentage = (_meteorRadius - _meteorRadiusMin) / radiusRangeSize;
+
+        float speed = _meteorBaseSpeed - ((radiusPercentage - 0.5f) * _meteorBaseSpeed) * SPEED_MULTIPLIER;
+        return speed;
     }
 
 }
