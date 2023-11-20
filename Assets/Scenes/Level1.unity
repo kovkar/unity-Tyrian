@@ -514,7 +514,7 @@ MonoBehaviour:
   speed: 5
   shipArea:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 20, y: 10, z: 20}
+    m_Extent: {x: 20, y: 20, z: 10}
 --- !u!4 &558636214
 Transform:
   m_ObjectHideFlags: 0
