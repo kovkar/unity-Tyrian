@@ -29,5 +29,21 @@
 - Currencies class: credits and score system [1h]
 ##### **16.10.23 [Monday]**
 - Cheats class: immortality cheat, finishing homework03 [2h]
-###### total time: 12 hours [12 milestone]
+###### total time: 12 hours
+---
+### Milestone 04:
+##### **21.10.23 [Saturday]**
+- modeling, unwraping and texturing spaceship in blender (my own model) [5h]
+##### **22.10.23 [Sunday]**
+- trying to sketch and model enemy ships.. not satisfied with the result [4h]
+##### **23.10.23 [Monday]**
+- searching for assets of enemy ships and meteors [1h]
+- adding 6 different meteors models to the game + [1h]
+- adding particle systems, ship thrusters and meteor smoke (VFX) [3h]
+spaceship pack asset: https://www.turbosquid.com/3d-models/spacecraft-space-3d-model-1550519
+meteors pack asset: https://www.turbosquid.com/3d-models/3d-small-asteroids-model-1415266
+##### **20.11.23 [Monday]**
+- searching and adding projectile models [1h]
+granade pack asset: https://sketchfab.com/3d-models/grenade-pack-two-a5ba885f285649c0a84cde0250cf9829
+###### total time: 15 hours
 ---

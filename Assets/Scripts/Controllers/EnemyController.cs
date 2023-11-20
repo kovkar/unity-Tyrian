@@ -23,7 +23,6 @@ public class EnemyController : MonoBehaviour
     {
         checkDirectionChange();
         this.transform.position += new Vector3(speed * movingDirectionX * Time.deltaTime, 0, 0);
-        body.transform.Rotate(0, 180 * Time.deltaTime * movingDirectionX, 0, Space.Self);
     }
 
     // Chcecks if enemy is touching x-axis play area edge
@@ -36,7 +35,7 @@ public class EnemyController : MonoBehaviour
         if (pos.x >= maxX | pos.x <= minX)
         {
             movingDirectionX *= -1;                         // change its x direction
-            pos.z -= this.transform.localScale.z + 0.2f;    // move one row closer to the ship
+            pos.z -= this.GetComponent<BoxCollider>().size.z + 0.1f;    // move one row closer to the ship
             pos.x = (pos.x <= minX) ? minX : maxX;          // clip x into play area
             this.transform.position = pos;
         }
