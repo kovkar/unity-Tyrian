@@ -47,3 +47,12 @@ meteors pack asset: https://www.turbosquid.com/3d-models/3d-small-asteroids-mode
 granade pack asset: https://sketchfab.com/3d-models/grenade-pack-two-a5ba885f285649c0a84cde0250cf9829
 ###### total time: 15 hours
 ---
+### Milestone 05:
+##### **20.11.23 [Monday]**
+- simple game menu added [4h]
+##### **21.11.23 [Thursday]**
+- adding hud, fixing player healthbar bug [3h]
+- adding basic audio [1h]
+
+###### total time: __ hours
+---

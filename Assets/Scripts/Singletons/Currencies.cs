@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
+using TMPro;
 using UnityEngine;
 
 /// <summary>
@@ -8,6 +9,9 @@ using UnityEngine;
 /// </summary>
 public class Currencies : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI creditsText;
+
     private readonly int[] SCORE_COEFS = { 1, 5, 10 };
 
     private readonly int[] CREDITS_COEFS = { 1, 1, 2 };
@@ -51,6 +55,18 @@ public class Currencies : MonoBehaviour
         Credits += creditsIncreemnt;
 
         string collisionType = (crash) ? "CRASH" : (kill) ? "KILL" : "HIT";
-        Debug.Log(collisionType + " - score: " + Score + "(+" + scoreIncrement + "), " + "credits: " + Credits + "(+" + creditsIncreemnt + ")");
+        incrementScore(scoreIncrement);
+        incrementCredits(creditsIncreemnt);
+        // Debug.Log(collisionType + " - score: " + Score + "(+" + scoreIncrement + "), " + "credits: " + Credits + "(+" + creditsIncreemnt + ")");
+    }
+
+    public void incrementScore(float value) 
+    {
+        scoreText.text = (Score + value).ToString();
+    }
+
+    public void incrementCredits(float value)
+    {
+        creditsText.text = (Score + value).ToString();
     }
 }

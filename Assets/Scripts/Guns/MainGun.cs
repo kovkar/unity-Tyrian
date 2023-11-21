@@ -18,10 +18,13 @@ public class MainGun : MonoBehaviour
     // delay from last spawn
     private float _delay;
 
+    private AudioSource audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
         _delay = 0;
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -41,6 +44,7 @@ public class MainGun : MonoBehaviour
             if (projectileContr != null)
             {
                 projectileContr.Set(_projectileSpeed, _projectileRadius);
+                audioSource.PlayOneShot(audioSource.clip, 1);
             }
             else
             {
