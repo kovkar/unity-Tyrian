@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class MeteorActor : Actor
 {
+    private AudioSource audioSource;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     public override void SelfDestroy()
     {
         Animation anim = GetComponentInChildren<Animation>();
@@ -17,6 +24,7 @@ public class MeteorActor : Actor
         Destroy(body);  // destroy rigidbody so it doesnt cause collision during animation
         smoke.Stop();   // stop smoke trail
         anim.Play();    // play animation
+        audioSource.Play();
     }
 
     public void ExpandAndDisolveAnimationEnded() { Destroy(this); }

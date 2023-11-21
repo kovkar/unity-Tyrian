@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    public RectTransform healthbarfFill;
+
     [SerializeField]
     private String[] listOfScenesNames;
 
@@ -42,7 +44,11 @@ public class GameManager : MonoBehaviour
     {
         int currentLevelIndex = Array.IndexOf(listOfScenesNames, SceneManager.GetActiveScene().name);
         if (currentLevelIndex + 1 >= listOfScenesNames.Length) { Debug.LogWarning("No more levels!"); }
-        else { SceneManager.LoadScene(listOfScenesNames[currentLevelIndex + 1]); }
+        else { 
+            SceneManager.LoadScene(listOfScenesNames[currentLevelIndex + 1]);
+            // reset ealthbar
+            healthbarfFill.localScale = new Vector3(Mathf.Clamp(1.0f, 0.0f, 1.0f), 1.0f, 1.0f);
+        }
     }
 
     public void endGame()

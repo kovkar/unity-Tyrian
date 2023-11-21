@@ -91,7 +91,7 @@ public class Actor : MonoBehaviour
     /// (Because Unity doesnt support interface and abstract class variables exposure in inspector)
     /// </summary>
     /// <param name="healthbar"></param>
-    public void SetHealthBarRefference(HealthBar healthbar)
+    public virtual void SetHealthBarRefference(HealthBar healthbar)
     {
         this.healthBar = healthbar;
     }
