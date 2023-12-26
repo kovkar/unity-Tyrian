@@ -58,12 +58,13 @@ public class Actor : MonoBehaviour
 
     /// <summary>
     /// Base method for lowering <c>health</c>.
+    /// Calls </c>SelfDestroy<c> method if health is non-positive.
     /// </summary>
     /// <param name="damage">value to substract from <c>health</c></param>
     public virtual void TakeDamage(int damage)
     {
         health -= damage;
-        if (health <= 0) { SelfDestroy(); }
+        if (health <= 0) SelfDestroy();
     }
 
     /// <summary>
