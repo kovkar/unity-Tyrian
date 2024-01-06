@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.Http.Headers;
 using TMPro;
 using UnityEngine;
 
@@ -9,15 +6,6 @@ using UnityEngine;
 /// </summary>
 public class Currencies : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private TextMeshProUGUI creditsText;
-
-    private readonly int[] SCORE_COEFS = { 1, 5, 10 };
-
-    private readonly int[] CREDITS_COEFS = { 1, 1, 2 };
-
-    private const int CRASH = 0, HIT = 1, KILL = 2;
-
     /// <value>Attribute <c>Score</c> represents current score of a player.</value>
     private int Score = 0;
 
@@ -26,6 +14,21 @@ public class Currencies : MonoBehaviour
 
     /// <value>Public static reference to this object. (Singleton)</value>
     public static Currencies Instance { get; private set; }
+
+    [Header("Refferecnes")]
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI creditsText;
+
+    private readonly int[] SCORE_COEFS = { 1, 5, 10 };
+    private readonly int[] CREDITS_COEFS = { 1, 1, 2 };
+
+    private enum COLLISION_TYPE
+    {
+        CRASH, HIT, KILL
+    }
+
+
+    // **************** UNITY METHODS **************** //
 
     public void Awake()
     {
@@ -46,18 +49,30 @@ public class Currencies : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    public void OnCollisionCurrencies(int healthTaken, bool crash, bool kill) 
+
+    // **************** PUBLIC METHODS **************** //
+
+    public void ProcessCollision(EnemyActor enemy, Collision collision)
     {
-        int i = (crash) ? CRASH : (kill) ? KILL : HIT;
-        int scoreIncrement =   SCORE_COEFS[i] * healthTaken;
-        int creditsIncreemnt = CREDITS_COEFS[i] * healthTaken;
+        var other = collision.gameObject.GetComponent<Actor>();
+        if (other is null)
+        {
+            Debug.LogWarning($"{other.name} is not an Actor, but collision with {gameObject.name} is allowed by matrix.");
+            return;
+        }
+
+        var type = COLLISION_TYPE.HIT;
+        type = other.gameObject.layer == LayerMask.NameToLayer("Player") ? COLLISION_TYPE.CRASH : type;
+        type = other.getDamage() >= enemy.getHealth() ? COLLISION_TYPE.KILL : type;
+
+        int scoreIncrement = SCORE_COEFS[(int) type] * other.getDamage();
+        int creditsIncreemnt = CREDITS_COEFS[(int) type] * other.getDamage();
+
         Score += scoreIncrement;
         Credits += creditsIncreemnt;
 
-        string collisionType = (crash) ? "CRASH" : (kill) ? "KILL" : "HIT";
         incrementScore(scoreIncrement);
         incrementCredits(creditsIncreemnt);
-        // Debug.Log(collisionType + " - score: " + Score + "(+" + scoreIncrement + "), " + "credits: " + Credits + "(+" + creditsIncreemnt + ")");
     }
 
     public void incrementScore(float value) 

@@ -58,7 +58,6 @@ GameObject:
   - component: {fileID: 1222467845577260723}
   - component: {fileID: 5387674842412211685}
   - component: {fileID: -3841328898899952447}
-  - component: {fileID: 7557319637314944657}
   - component: {fileID: 8013286189394229904}
   - component: {fileID: 2478039307509750771}
   m_Layer: 8
@@ -111,21 +110,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d508fb14612b5645b1a62fa0a0e1a6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 6
   damage: 5
---- !u!114 &7557319637314944657
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4839242552867615721}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 585c8faecdb2bc344b992b6f29100705, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthbarfFill: {fileID: 4267667604632623260}
+  maxHealth: 6
+  healthBar: {fileID: 0}
 --- !u!54 &8013286189394229904
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -376,13 +363,34 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5748242268552056030, guid: 69667be7e4135944ea0f4ac5de18bca7, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 4146938030201428310}
   m_SourcePrefab: {fileID: 100100000, guid: 69667be7e4135944ea0f4ac5de18bca7, type: 3}
 --- !u!224 &4267667604632623260 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2210085837031455585, guid: 69667be7e4135944ea0f4ac5de18bca7, type: 3}
   m_PrefabInstance: {fileID: 2707226638444159997}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7662834822726692643 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5748242268552056030, guid: 69667be7e4135944ea0f4ac5de18bca7, type: 3}
+  m_PrefabInstance: {fileID: 2707226638444159997}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4146938030201428310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7662834822726692643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 585c8faecdb2bc344b992b6f29100705, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fill: {fileID: 4267667604632623260}
 --- !u!224 &9055885497966632173 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6358792032975716112, guid: 69667be7e4135944ea0f4ac5de18bca7, type: 3}

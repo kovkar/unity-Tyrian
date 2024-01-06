@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 /// <summary>
-///  <c>Actor</c> class is a base class for all actors (ships and projectiles). This class is:
+///  Base class for all actors (everything that can deal or take damage). This class is:
 ///  <list type="bullet">
 ///   <item>
 ///    <description>handling collision events between actors</description>
@@ -22,96 +19,84 @@ public class Actor : MonoBehaviour
     /// <value>Attribute <c>health</c> represents <c>Actor</c>'s current health value.</value>
     private int health;
 
+    [Header("Actor settings")]
+
+    /// <value>Attribute <c>damage</c> represents damage dealt to other <c>Actor</c> in collision.</value>
+    [SerializeField] private int damage;
+
     /// <value>Attribute <c>maxHealth</c> defines <c>Actor</c>'s maximal allowed health value.</value>
-    [SerializeField]
-    private int maxHealth;
+    [SerializeField] private int maxHealth;
 
-    /// <value>Attribute <c>damage</c> represents damage dealt to other <c>Actor</c>s durring collision.</value>
-    [SerializeField]
-    private int damage;
 
-    /// <value>Reference to <c>HealtBar</c>. If null <c>HealthBar</c> not attached.</value>
-    private HealthBar healthBar;
+    [Header("Refferences")]
+    /// <value>Attribute healthBar is refference to bar displaying <c>Actor</c>'s health</value>
+    [SerializeField] private Bar healthBar = null;
 
-    void Start()
+
+    // **************** PUBLIC METHODS **************** //
+
+    public int getDamage() { return damage; }
+
+    public int getHealth() { return health; }
+
+    public int getMaxHealth() { return maxHealth; }
+
+    // **************** UNITY METHODS **************** //
+
+    private void Awake()
     {
-        this.health = this.maxHealth;
-        checkRequiredComponentsAndSettings();
+        health = maxHealth;
+
+        // check if actor is set up correctly for collisions
+        if (!TryGetComponent<Collider>(out Collider _))
+            Debug.LogError($"{gameObject.name} is missing Collider component required by Actor component.");
+        if (!TryGetComponent<Rigidbody>(out Rigidbody rb))
+            Debug.LogError($"{gameObject.name} is missing Rigidbody component required by Actor component.");
+        else
+        {
+            if (!rb.isKinematic)
+                Debug.LogWarning($"Actor {gameObject.name} should be kinematic.");
+            if (rb.useGravity)
+                Debug.LogWarning($"Actor {gameObject.name} should not use gravity.");
+        }
     }
 
     /// <summary>
     /// Method handling collisions between <c>Actor</c>'s. 
     /// When Actors 'A' and 'B' collide, health of 'A' is decreased by damage of 'B'. 
     /// </summary>
-    public virtual void OnCollisionEnter(Collision collision)
+    protected virtual void OnCollisionEnter(Collision collision)
     {
         // check if other game object is Actor
-        Actor otherActor = collision.gameObject.GetComponent<Actor>();
-        if (otherActor == null) { Debug.LogWarning(collision.gameObject.name + " is not an Actor, but collision is allowed by matrix."); }
-
-        // update health
-        this.TakeDamage(otherActor.damage);
-
-        // update health bar if attached
-        if (healthBar != null) { this.DecreaseHealthBar(otherActor.damage); }
+        if (!TryGetComponent<Actor>(out Actor otherActor))
+            Debug.LogWarning($"{otherActor.name} is not an Actor, but collision with {gameObject.name} is allowed by matrix.");
+        else
+        {
+            // update health
+            TakeDamage(otherActor.damage);
+        }
     }
+
+
+    // **************** PROTECTED METHODS **************** //
 
     /// <summary>
     /// Base method for lowering <c>health</c>.
     /// Calls </c>SelfDestroy<c> method if health is non-positive.
     /// </summary>
     /// <param name="damage">value to substract from <c>health</c></param>
-    public virtual void TakeDamage(int damage)
+    protected virtual void TakeDamage(int damage)
     {
         health -= damage;
+        healthBar?.DecreaseBy( (float) damage / maxHealth);
         if (health <= 0) SelfDestroy();
-    }
-
-    /// <summary>
-    /// Base method for decreasing attached healthbar.
-    /// </summary>
-    /// <param name="damage">damage done to the <c>Actor</c></param>
-    public virtual void DecreaseHealthBar(int damage)
-    {
-        if (maxHealth == 0) { return; }
-
-        float percAmount = (float) damage / maxHealth;
-        healthBar.DecreaseBy(percAmount);
     }
 
     /// <summary>
     /// Base method for destroying <c>Actor</c>.
     /// </summary>
-    public virtual void SelfDestroy()
+    protected virtual void SelfDestroy()
     {
         Destroy(this.gameObject);
-    }
-
-    /// <summary>
-    /// Method used to pass <c>HealthBar</c>'s reference to <c>Actor</c>. 
-    /// (Because Unity doesnt support interface and abstract class variables exposure in inspector)
-    /// </summary>
-    /// <param name="healthbar"></param>
-    public virtual void SetHealthBarRefference(HealthBar healthbar)
-    {
-        this.healthBar = healthbar;
-    }
-
-    public int getDamage() { return this.damage; }
-    public int getHealth() { return this.health; }
-
-
-    /// <summary>
-    /// Checking components and their settings needed for correct handling of collisions between Actors.
-    /// </summary>
-    private void checkRequiredComponentsAndSettings()
-    {
-        if (!TryGetComponent<Collider>(out Collider cldr)) { Debug.LogError(this.gameObject.name + " is missing Collider component required by Actor component."); }
-        if (!TryGetComponent<Rigidbody>(out Rigidbody rb)) { Debug.LogError(this.gameObject.name + " is missing Rigidbody component required by Actor component."); }
-        else
-        {
-            if (!rb.isKinematic) { Debug.LogWarning("Actor " + this.gameObject.name + "should be kinematic."); }
-            if (rb.useGravity) { Debug.LogWarning("Actor " + this.gameObject.name + "should not use gravity."); }
-        }
     }
 }

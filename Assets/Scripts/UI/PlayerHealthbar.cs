@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +7,6 @@ public class PlayerHealthbar : HealthBar
 { 
     void Start()
     {
-        base.SetReferenceToActor();
         if (GameManager.Instance.healthbarfFill == null) { Debug.LogError("GameManager is missing healtbar fill refference "); }
     }
 
@@ -26,3 +25,4 @@ public class PlayerHealthbar : HealthBar
         GameManager.Instance.healthbarfFill.localScale = new Vector3(Mathf.Clamp(perc, 0.0f, 1.0f), 1.0f, 1.0f);
     }
 }
+*/

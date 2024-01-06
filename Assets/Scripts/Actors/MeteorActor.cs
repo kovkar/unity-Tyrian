@@ -1,31 +1,50 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+///  Subclass of <c>Actor</c> representing meteors. 
+///  Overrides <name>SelfDestroy</name> method to play audio and animation on destroy.
+/// </summary>
 public class MeteorActor : Actor
 {
-    private AudioSource audioSource;
+    private AudioSource explosionSound;
+    private Animation destroyAnimation;
+    private ParticleSystem smokeTrail;
+    private Rigidbody rb;
 
-    void Start()
+
+    // **************** PUBLIC METHODS **************** //
+
+    /// <summary>
+    /// Method called at the end of the destroy animation.  
+    /// </summary>
+    public void OnDestroyAnimEnds() { Destroy(this); }
+
+    // **************** UNITY METHODS **************** //
+
+    private void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
-    }
+        destroyAnimation = GetComponentInChildren<Animation>();
+        smokeTrail = GetComponentInChildren<ParticleSystem>();
+        explosionSound = GetComponent<AudioSource>();
+        rb = GetComponentInChildren<Rigidbody>();
 
-    public override void SelfDestroy()
+        if (destroyAnimation is null)
+            Debug.LogWarning($"Animation component not found in {gameObject.name} or its children!");
+        if (smokeTrail is null)
+            Debug.LogWarning($"ParticleSystem  not found in {gameObject.name} or its children!");
+        if (explosionSound is null)
+            Debug.LogWarning($"AudioSource component not found in {gameObject.name} or its children!");
+        if (rb is null)
+            Debug.LogWarning($"Rigidbody component not found in {gameObject.name} or its children!");
+    } 
+
+    // **************** OVERRIDE METHODS **************** //
+
+    protected override void SelfDestroy()
     {
-        Animation anim = GetComponentInChildren<Animation>();
-        Rigidbody body = GetComponentInChildren<Rigidbody>();
-        ParticleSystem smoke = GetComponentInChildren<ParticleSystem>();
-
-        if (anim == null)  { Debug.LogError("Animation component not found in " + this.gameObject.name + " or its children!"); return; }
-        if (body == null)  { Debug.LogError("Rigidbody component not found in " + this.gameObject.name + " or its children!"); return; }
-        if (smoke == null) { Debug.LogError("ParticleSystem named 'Smoke' not found in " + this.gameObject.name + " or its children!"); return; }
-
-        Destroy(body);  // destroy rigidbody so it doesnt cause collision during animation
-        smoke.Stop();   // stop smoke trail
-        anim.Play();    // play animation
-        audioSource.Play();
+        if (rb is not null) Destroy(rb);                
+        smokeTrail?.Stop();   
+        explosionSound?.Play();
+        destroyAnimation?.Play();
     }
-
-    public void ExpandAndDisolveAnimationEnded() { Destroy(this); }
 }
