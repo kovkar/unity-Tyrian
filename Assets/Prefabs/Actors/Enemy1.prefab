@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3416051140303986726}
-  - component: {fileID: 7523902172348273739}
+  - component: {fileID: 2425045465041255670}
   m_Layer: 0
-  m_Name: Gun
+  m_Name: Cannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,13 +26,13 @@ Transform:
   m_GameObject: {fileID: 3820077639855066729}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.5}
+  m_LocalPosition: {x: 0, y: 0, z: -1.48}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1222467845577260723}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7523902172348273739
+--- !u!114 &2425045465041255670
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,12 +41,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 3820077639855066729}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa56232df0ecddf49bb13c57f8cf1e02, type: 3}
+  m_Script: {fileID: 11500000, guid: cab9fad68adcabd46b1224c7cdf7df54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 2547178751765692439, guid: 8b2c12857bd32ca4bb81df94fa1a6b21, type: 3}
-  delayMin: 2
-  delayMax: 4
+  projectile: {fileID: 3869203570826479154, guid: 8b2c12857bd32ca4bb81df94fa1a6b21, type: 3}
+  shotSound: {fileID: 0}
+  minDelay: 1
+  maxDelay: 2
+  projSpeed: 5
+  direction: {x: 0, y: 0, z: -1}
 --- !u!1 &4839242552867615721
 GameObject:
   m_ObjectHideFlags: 0

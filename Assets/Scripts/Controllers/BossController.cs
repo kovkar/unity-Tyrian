@@ -11,7 +11,7 @@ public class BossController : MonoBehaviour
 
     [SerializeField] private Transform target;
 
-    private State _state = State.SHORT_RANGE_ATTACK;
+    private State _state = State.LONG_RANGE_ATTACK;
     private Vector3 _velocity = Vector3.zero;
 
 

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3857672396162048632}
   - component: {fileID: 7605473713369521493}
-  - component: {fileID: 7268301993726255510}
+  - component: {fileID: 3869203570826479154}
   - component: {fileID: 4573041163966619951}
   - component: {fileID: 2715859612885201716}
   m_Layer: 9
@@ -48,9 +48,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d94bc697f4f6e24aa74eb753a7ac28b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
   damage: 1
---- !u!114 &7268301993726255510
+  maxHealth: 0
+  healthBar: {fileID: 0}
+--- !u!114 &3869203570826479154
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -59,10 +60,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2547178751765692439}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bd5a727f05093d469f56b3336e8bc14, type: 3}
+  m_Script: {fileID: 11500000, guid: 73acf8f738bc4bd4987914471f13615f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 7
 --- !u!135 &4573041163966619951
 SphereCollider:
   m_ObjectHideFlags: 0
