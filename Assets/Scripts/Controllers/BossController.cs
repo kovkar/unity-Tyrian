@@ -5,14 +5,17 @@ using UnityEngine;
 /// </summary>
 public class BossController : MonoBehaviour
 {
-    [SerializeField] private float maxSpeed;
-    [SerializeField] private float maxAccel;
-    [SerializeField] private float minTargetDist;
+    [Header("Movement")]
+    [SerializeField] private float maxSpeed = 5;
+    [SerializeField] private float maxAccel = 10;
+    [SerializeField] private float powerSpeed = 10;
+    [SerializeField] private float powerAccel = 10;
 
+    [Header("Refferences")]
     [SerializeField] private Transform target;
 
-    private State _state = State.LONG_RANGE_ATTACK;
     private Vector3 _velocity = Vector3.zero;
+    private State _state = State.SEEK;
 
 
     // **************** PUBLIC **************** //
@@ -23,31 +26,37 @@ public class BossController : MonoBehaviour
     public enum State
     {
         IDLE,
-        LONG_RANGE_ATTACK,
-        SHORT_RANGE_ATTACK
+        SEEK,
+        LONG_RANGE_SEEK,
+        POWER_SEEK
     }
 
+
     /// <summary>
-    /// Sets boss movement <c>State</c>.
+    /// Changes movement state.
     /// </summary>
     /// <param name="state">state to set</param>
-    public void SetState(State state) { _state = state; }
+    public void ChangeState(State state)
+    {
+        _state = state;
+    }
 
 
     // **************** UNITY **************** //
 
     private void Update()
     {
-        var seekPos = transform.position;
+        if (_state == State.IDLE) return;
 
-        switch (_state)
-        {
-            case State.SHORT_RANGE_ATTACK: seekPos = target.position; break;
-            case State.LONG_RANGE_ATTACK:  seekPos = new Vector3(target.position.x, target.position.y, EnvironmentProps.Instance.maxZ()); break;
-        }
+        var seekPos = target.position;
+        if (_state == State.LONG_RANGE_SEEK) seekPos.z = EnvironmentProps.Instance.maxZ();
 
-        _velocity = GameUtils.Instance.ComputeSeekVelocity(transform.position, _velocity, maxSpeed, maxAccel, seekPos, Time.deltaTime);
+        var speed = (_state == State.POWER_SEEK) ? powerSpeed : maxSpeed;
+        var accel = (_state == State.POWER_SEEK) ? powerAccel : maxAccel;
+
+        _velocity = GameUtils.Instance.ComputeSeekVelocity(transform.position, _velocity, speed, accel, seekPos, Time.deltaTime);
         var new_pos = GameUtils.Instance.ComputeEulerStep(transform.position, _velocity, Time.deltaTime);
-        transform.position = EnvironmentProps.Instance.IntoArea(new_pos, minTargetDist, minTargetDist);
+
+        transform.position = EnvironmentProps.Instance.IntoArea(new_pos, 0, 0);
     }
 }

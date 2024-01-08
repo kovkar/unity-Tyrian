@@ -327,7 +327,7 @@ GameObject:
   m_Component:
   - component: {fileID: 520640228}
   - component: {fileID: 520640229}
-  - component: {fileID: 520640232}
+  - component: {fileID: 520640233}
   - component: {fileID: 520640230}
   - component: {fileID: 520640231}
   m_Layer: 0
@@ -417,7 +417,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &520640232
+--- !u!114 &520640233
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -426,13 +426,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 520640227}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2165f3dd283222f48925569c52523bed, type: 3}
+  m_Script: {fileID: 11500000, guid: 130e0022f3bea7045bc830d6589416e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 5
-  maxAccel: 5
-  minTargetDist: 0
-  target: {fileID: 1681426455}
+  powerSpeed: 7
+  powerAccel: 100
+  powerCooldown: 15
+  powerAttackRange: 5
+  primarySpeed: 5
+  primaryAccel: 20
+  timeToOverheat: 10
+  primaryCooldown: 10
+  shortSpeed: 5
+  shortAccel: 10
+  primaryCannon: {fileID: 1517332510}
+  secondaryCannon: {fileID: 0}
+  powerCannon: {fileID: 0}
+  seekTarget: {fileID: 1681426455}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
