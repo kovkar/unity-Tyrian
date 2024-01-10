@@ -1,154 +1,312 @@
-/*using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.XR;
-using static UnityEngine.GraphicsBuffer;
+using System.Threading.Tasks;
 
+/// <summary>
+/// Class controling behaviour of final boss.
+/// Boss (FSM) has 4 attack modes (States) and 3 different cannons.
+/// <list type="bullet">
+///   <item> <description>Power attack (used whenever ready)</description></item>
+///   <item> <description>Long range attack (used when power cannon in cooldown and long cannon not overheated)</description></item>
+///   <item> <description>Short range attack (used when both power and long cannon in cooldown)</description></item>
+///   <item> <description>Idle (not attacking)</description></item>
+///  </list>
+/// </summary>
 public class Boss : MonoBehaviour
 {
-    [Header("Movement Settings")]
-    [SerializeField] private float maxSpeed = 5;
-    [SerializeField] private float maxAccel = 5;
+    /// <summary>
+    /// Defines type of boss movement and guns activated.
+    /// </summary>
+    private enum State
+    {
+        /// <value>idle, <c>powerCannon</c> active</value>
+        POWER_ATTACK,
+        /// <value>seek with high acceleration, all guns deactivated</value>
+        POWER_ATTACK_SEEK,
+        /// <value>long range seek, <c>longCannon</c> active</value>
+        LONG_RANGE_ATTACK,
+        /// <value>seek, <c>shortCannon</c> active</value>
+        SHORT_RANGE_ATTACK,
+        /// <value>idle, all guns deactivated</value>
+        IDLE
+    }
 
-    [Header("Attack settings")]
-    [SerializeField] private float powerAttackRange = 3;
-    [SerializeField] private int powerAttackCooldown = 20;
-    [SerializeField] private int cannonOverheatTime = 10;
-    [SerializeField] private int cannonCooldownTime = 10;
+    // **************** SETTINGS **************** //
 
     [Header("Refferences")]
-    [SerializeField] private Transform seekTarget;
-    [SerializeField] private Cannon longRangeCannon;
+    /// <value><c>Actor</c> be seeked by boss</value>
+    [SerializeField] Actor  target;
+    /// <value><c>Cannon</c> to be used (set active) during power attack</value>
+    [SerializeField] Cannon powerCannon;
+    /// <value><c>Cannon</c> to be used (set active) during long range attack</value>
+    [SerializeField] Cannon longCannon;
+    /// <value><c>Cannon</c> to be used (set active) during short range attack</value>
+    [SerializeField] Cannon shortCannon;
+    /// <value><c>Bar</c> showing cooldown until power attack ready</value>
+    [SerializeField] Bar    powerCannonCooldownBar;
+    /// <value><c>Bar</c> showing temperature of <c>longCannon</c></value>
+    [SerializeField] Bar    longCannonTemperatureBar;
 
-    private bool isCannonOverheated = false;
-    private bool isPowerAttackReady = false;
+    [Header("Power attack settings")]
+    /// <value><c>Boss</c> max speed when power attack is ready</value>
+    [SerializeField] float  maxPowerSpeed = 7;
+    /// <value><c>Boss</c> max acceleration when power attack is ready</value>
+    [SerializeField] float  maxPowerAccel = 50;
+    /// <value>minimal distance to <c>target</c> for power attack to be activated</value>
+    [SerializeField] float  minPowerRange = 5;
+    /// <value>power attack cooldown after use</value>
+    [SerializeField] int    powerCooldown = 15;
 
-    private Vector3 _velocity = Vector3.zero;
-    private State activeState = State.WAITING;
-    enum State
+    [Header("Long range attack settings")]
+    /// <value><c>Boss</c> max speed when in long range attack</value>
+    [SerializeField] float  maxLongSpeed = 5;
+    /// <value><c>Boss</c >max acceleration when in long range attack</value>
+    [SerializeField] float  maxLongAccel = 20;
+    /// <value><c>longCannon</c> cooldown after being overheated</value>
+    [SerializeField] int    longCannonCooldown = 10;
+    /// <value><c>longCannon</c> overheat threshold</value>
+    [SerializeField] float  maxTemperature = 100;
+    /// <value>increase of <c>longCannon</c> temperature per second when used</value>
+    [SerializeField] int    heatingFactor = 6;
+    /// <value>decrease of <c>longCannon</c> temperature per second when unused</value>
+    [SerializeField] int    coolingFactor = 4;
+
+    [Header("Short range attack settings")]
+    /// <value><c>Boss</c> max speed when in short range attack</value>
+    [SerializeField] float  maxShortSpeed = 5;
+    /// <value><c>Boss</c > max acceleration when in long short attack</value>
+    [SerializeField] float  maxShortAccel = 10;
+
+
+    // **************** PROPERTIES **************** //
+
+    /// <value><c>IsPowerAttackReady</c> property backfield</value>
+    private bool isPowerAttackready = false;
+    /// <value><c>IsLongCannonReady</c> property backfield</value>
+    private bool isLongCannonReady  = true;
+
+
+    /// <summary>
+    /// One of the properties defining boss current <c>State</c>
+    /// </summary>
+    private bool IsPowerAttackReady
     {
-        WAITING,
-        SHORT_RANGE_ATTACK,
-        LONG_RANGE_ATTACK,
-        POWER_ATTACK,
+        get => isPowerAttackready;
+        set { isPowerAttackready = value; OnPropertyChanged(); }
+    }
+
+    /// <summary>
+    /// One of the properties defining boss current <c>State</c>
+    /// </summary>
+    private bool IsLongCannonReady
+    {
+        get => isLongCannonReady;
+        set { isLongCannonReady = value; OnPropertyChanged(); }
+    }
+
+
+    // **************** VARIABLES **************** //
+
+    /// <value>current boss <c>State</c></value>
+    private State _state = State.IDLE;
+    /// <value>maximal boss acceleration in <c>_state</c></value>
+    private float _maxAccel = 0;
+    /// <value>maximal boss speed in <c>_state</c></value>
+    private float _maxSpeed = 0;
+    /// <value>current temperature of <c>longCannon</c></value>
+    private float _temperature = 0;
+    /// <value>boss valocity</value>
+    private Vector3 _velocity = Vector3.zero;
+    /// <value>time in seconds until power attack is ready</value>
+    private float _powerCooldown;
+
+
+    // **************** UNITY **************** //
+
+    private void Start()
+    {
+        OnPropertyChanged();
+        _powerCooldown = powerCooldown;  
     }
 
     private void Update()
     {
-        activeState = UpdateState();
+        UpdatePosition();
+        UpdateTemperature();
+        UpdatePowerCooldown();
+    }
 
-        switch (activeState) 
+
+    // **************** PRIVATE **************** //
+
+    /// <summary>
+    /// Updates position of this game object based on current <c>_state</c>.
+    /// </summary>
+    private void UpdatePosition() 
+    {
+        var dt    = Time.deltaTime;
+        var pos   = gameObject.transform.position;
+        var utils = GameUtils.Instance;
+        var props = EnvironmentProps.Instance;
+
+        // get position to seek
+        var seekPos = target.gameObject.transform.position;
+        if (_state is State.LONG_RANGE_ATTACK)
+        {
+            seekPos.z = EnvironmentProps.Instance.maxZ();
+        }
+
+        // update velocity
+        _velocity = utils.ComputeSeekVelocity(pos, _velocity, _maxSpeed, _maxAccel, seekPos, dt);
+
+        // compute new position
+        var new_pos = utils.ComputeEulerStep(transform.position, _velocity, dt);
+
+        // clip into play area
+        transform.position = props.IntoArea(new_pos, 0, 0);
+    }
+
+    /// <summary>
+    /// Updates <c>_temperature</c> of long cannon based on <c>_state</c> and checks if not overheated.
+    /// Controlls <c>powerCannonCooldownBar</c>.
+    /// </summary>
+    private void UpdateTemperature()
+    {
+        if (!IsLongCannonReady) return;
+
+        float deltaTemp;
+        float deltaTime = Time.deltaTime;
+
+        // calculate temperature delta
+        if (_state == State.LONG_RANGE_ATTACK)
+        {
+            deltaTemp = heatingFactor * deltaTime;
+        }
+        else
+        {
+            deltaTemp = -coolingFactor * deltaTime;
+        }
+
+        // update temperature
+        _temperature += deltaTemp;
+
+        // update temperature bar
+        longCannonTemperatureBar?.SetTo(_temperature / maxTemperature);
+
+        // check for overheat
+        if (_temperature >= maxTemperature)
+        {
+            IsLongCannonReady = false;
+            _ = CannonCooldownAsync();
+        } 
+    }
+
+    /// <summary>
+    /// Updates <c>_powerCooldown</c> and checks if power attack is ready.
+    /// Controlls <c>powerCannonTemperatureBar</c>.
+    /// </summary>
+    private void UpdatePowerCooldown()
+    {
+        if (_state is State.POWER_ATTACK or State.POWER_ATTACK_SEEK) return;
+
+        // update cooldown time
+        _powerCooldown -= Time.deltaTime;
+
+        // update power cooldown bar
+        powerCannonCooldownBar?.SetTo(1 - (_powerCooldown / powerCooldown));
+
+        // check if cooldown over == power attack ready
+        if (_powerCooldown <= 0)
+        {
+            IsPowerAttackReady = true;
+            _ = PowerAttackAsync();
+        }
+    }
+
+    /// <summary>
+    /// Called when property <c>IsLongCannnonReady</c> or <c>IsPowerAttackReady</c> 
+    /// is changed. Updates dependent values.
+    /// </summary>
+    private void OnPropertyChanged()
+    {
+        ChangeState();
+        ChangeSpeedAndAccel();
+        ChangeCannons();
+    }
+
+    /// <summary>
+    /// Updates <c>_state</c> based on values of properties
+    /// <c>IsPowerAttackReady</c> and <c>IsLongCannonOverheated</c>.
+    /// </summary>
+    private void ChangeState()
+    {
+        if (IsPowerAttackReady)
+        {
+            _state = State.POWER_ATTACK;
+            return;
+        }
+        if (IsLongCannonReady)
+        {
+            _state = State.LONG_RANGE_ATTACK;
+            return;
+        }
+        _state = State.SHORT_RANGE_ATTACK;
+    }
+
+    /// <summary>
+    /// Update <c>_maxSpeed</c> and <c>_maxAccel</c> based on current<c>_state</c>.
+    /// </summary>
+    private void ChangeSpeedAndAccel()
+    {
+        switch (_state)
         {
             case State.SHORT_RANGE_ATTACK:
-                Process_SHORT_RANGE_ATTACK();
-                break;
-            case State.LONG_RANGE_ATTACK:
-                Process_LONG_RANGE_ATTACK();
+                _maxSpeed = maxShortSpeed;
+                _maxAccel = maxShortAccel;
                 return;
-            case State.POWER_ATTACK:
-                Process_POWER_ATTACK();
-                break;
-            case State.WAITING:
-                break;
-        }
-    }
-
-    private State UpdateState()
-    {
-        switch (activeState) 
-        {
-            case State.WAITING:
-                if (Input.anyKeyDown) { _ = CannonOverheatTimer(); return State.LONG_RANGE_ATTACK; }
-                break;
-
-            case State.SHORT_RANGE_ATTACK:
-                if (isPowerAttackReady)  { _ = PowerAttackCooldown(); return State.POWER_ATTACK; }
-                if (!isCannonOverheated) { _ = CannonOverheatTimer(); return State.LONG_RANGE_ATTACK; }
-                break;
 
             case State.LONG_RANGE_ATTACK:
-                if (isPowerAttackReady) { _ = PowerAttackCooldown(); return State.POWER_ATTACK; }
-                if (isCannonOverheated) { _ = CannonOverheatTimer(); return State.SHORT_RANGE_ATTACK; }
-                break;
-        }
-        return activeState;
-    }
+                _maxSpeed = maxLongSpeed;
+                _maxAccel = maxLongAccel;
+                return;
 
-    private void Process_SHORT_RANGE_ATTACK()
-    {
-        longRangeCannon.enabled = false;
-        transform.position = Seek();
-    }
+            case State.POWER_ATTACK_SEEK:
+                _maxSpeed = maxPowerSpeed;
+                _maxAccel = maxPowerAccel;
+                return;
 
-    private void Process_LONG_RANGE_ATTACK()
-    {
-        longRangeCannon.enabled = true;
-        var pos = Seek();
-        pos.z = EnvironmentProps.Instance.maxZ();
-        transform.position = pos;
-    }
-
-    private void Process_POWER_ATTACK()
-    {
-        if (isPowerAttackActive) return;
-
-        transform.position = Seek();
-        if (Vector3.Distance(transform.position, seekTarget.position) <= powerAttackRange)
-        {
-            StartCoroutine(PowerAttack());
+            default:
+                _maxAccel = 0;
+                _maxSpeed = 0;
+                return;
         }
     }
 
 
-    private IEnumerator PowerAttack()
+    /// <summary>
+    /// Activates cannons allowed in current<c>_state</c>, deactivate others.
+    /// </summary>
+    private void ChangeCannons()
     {
-        isPowerAttackActive = true;
-        isPowerAttackReady = false;
-
-        yield return new WaitForSeconds(1);
-        
-        isPowerAttackActive = false;
-        StartCoroutine(PowerAttackCooldown());
+        powerCannon?.gameObject.SetActive(_state is State.POWER_ATTACK);
+        longCannon?.gameObject.SetActive(_state is State.LONG_RANGE_ATTACK);
     }
 
-    private IEnumerator PowerAttackCooldown()
+    /// <summary>
+    /// Sets <c>IsLongCannonReady</c> to true after <c>longCannonCooldown</c> seconds.
+    /// </summary>
+    /// <returns></returns>
+    private async Task CannonCooldownAsync()
     {
-        yield return new WaitForSeconds(powerAttackCooldown);
-        isPowerAttackReady = true;
+        await Task.Delay(longCannonCooldown * 1000);
+        _temperature = 0;
+        IsLongCannonReady = true;
     }
 
-    private async Task CannonOverheatTimer()
+    private async Task PowerAttackAsync()
     {
-        await Task.Delay(cannonOverheatTime * 1000);
-        isCannonOverheated = true;
-    }
-
-    private async Task CannonCooldownTimer()
-    {
-        await Task.Delay(cannonCooldownTime * 1000);
-        isCannonOverheated = false;
-    }
-
-    /// Sets 'isPowerAtackReady' to true after 'time' seconds.
-    private async Task PowerAttackTimer(int time)
-    {
-        await Task.Delay(time * 1000);
-        isPowerAttackReady = true;
-    }
-
-
-    private IEnumerator CannonCooldown()
-    {
-        yield return new WaitForSeconds(cannonCooldownTime);
-        isCannonOverheated = false;
-    }
-
-    private Vector3 Seek()
-    {
-        _velocity = GameUtils.Instance.ComputeSeekVelocity(transform.position, _velocity, maxSpeed, maxAccel, seekTarget.position, Time.deltaTime);
-        var pos = GameUtils.Instance.ComputeEulerStep(transform.position, _velocity, Time.deltaTime);
-        return EnvironmentProps.Instance.IntoArea(pos, 0, 0);
+        // TO DO: power attack
+        await Task.Delay(3000);
+        _powerCooldown = powerCooldown;
+        IsPowerAttackReady = false;
     }
 }
-*/
