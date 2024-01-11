@@ -6,7 +6,7 @@ using UnityEngine;
 public class BasicBar : Bar
 {
     [Header("Refference to set in inspecotr!")]
-    [SerializeField] private RectTransform fill;
+    [SerializeField] protected RectTransform fill;
 
     // **************** UNITY METHODS **************** //
 
