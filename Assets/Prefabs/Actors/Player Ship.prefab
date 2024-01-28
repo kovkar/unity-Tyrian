@@ -30,8 +30,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -9}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8613193718110721320}
   - {fileID: 3849143868426755596}
@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 20
-  maxHealth: 100
+  maxHealth: 30
   healthBar: {fileID: 0}
 --- !u!54 &3107884256964943295
 Rigidbody:
@@ -9819,11 +9819,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d37733e4afe6c54a92465101cd97c04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectile: {fileID: 6740935906632668829, guid: f2851322535229d4d86ae7910af3b635, type: 3}
+  projectile: {fileID: 3142517242013959076, guid: 6857f07b4dd0a2641973ad821b758e99, type: 3}
   shotSound: {fileID: 0}
-  cadence: 2
-  projSpeed: 2
-  firstShotDelay: 1
+  cadence: 4
+  projSpeed: 25
+  firstShotDelay: 0
   shootKey: 32
   direction: {x: 0, y: 0, z: 1}
 --- !u!82 &597973203950833934

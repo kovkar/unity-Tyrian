@@ -1,6 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.Net.WebSockets;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,10 +7,28 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    public RectTransform healthbarfFill;
+    [Header("Settings")]
+    [SerializeField] private string[] levelNames;
+    [SerializeField] private int[] scoreThresholds;
 
-    [SerializeField]
-    private String[] listOfScenesNames;
+    [Header("Refferences")]
+    [SerializeField] private GameObject playerHUD;
+    [SerializeField] private GameObject bossHUD;
+
+    public Bar playerHealthbar;
+    public Bar bossHealthbar;
+    /// <value><c>Bar</c> showing cooldown until power attack ready</value>
+    public Bar powerCannonCooldownBar;
+    /// <value><c>Bar</c> showing temperature of <c>longCannon</c></value>
+    public Bar longCannonTemperatureBar;
+
+
+
+
+    private Canvas HUD;
+    private Timer timer;
+    private const int BOSS_LEVEL = 4; 
+    private int _level = 10;
 
     public void Awake()
     {
@@ -28,31 +45,65 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         DontDestroyOnLoad(this);
+        playerHealthbar = playerHUD.GetComponentInChildren<Bar>();
+        timer = GetComponentInChildren<Timer>();
+        HUD = GetComponentInChildren<Canvas>();
+        HUD.gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.N)) { loadNextLevel(); }
-    }
-
-    private void loadNextLevel() 
-    {
-        int currentLevelIndex = Array.IndexOf(listOfScenesNames, SceneManager.GetActiveScene().name);
-        if (currentLevelIndex + 1 >= listOfScenesNames.Length) { Debug.LogWarning("No more levels!"); }
-        else { 
-            SceneManager.LoadScene(listOfScenesNames[currentLevelIndex + 1]);
-            // reset ealthbar
-            healthbarfFill.localScale = new Vector3(Mathf.Clamp(1.0f, 0.0f, 1.0f), 1.0f, 1.0f);
+        if (Input.GetKey(KeyCode.N)) 
+        {
+            LoadNextLevel(); 
         }
     }
 
-    public void endGame()
+    public void StartGame(int level)
     {
-        SceneManager.LoadScene("GameOverScene");
+        timer.StartTimer();
+        HUD.gameObject.SetActive(true);
+        LoadLevel(level);
     }
+
+    public void EndGame(bool victory)
+    {
+        timer.StopTimer();
+        if (victory)
+        {
+            SceneManager.LoadScene("Victory");
+        }
+        else
+        {
+            SceneManager.LoadScene("Loss");
+        }
+        Destroy(timer.gameObject);
+        HUD.gameObject.SetActive(false);
+    }
+
+    private void LoadLevel(int level)
+    {
+        _level = level;
+        Currencies.Instance.SetScoreThreshold(scoreThresholds[level-1]);
+        SceneManager.LoadScene(levelNames[level - 1]);
+        playerHUD?.SetActive(true);
+        bossHUD?.SetActive(level == BOSS_LEVEL);
+    }
+
+    public void LoadNextLevel()
+    {
+        if (_level > levelNames.Length - 1)
+        {
+            Debug.LogWarning("No more levels!");
+        }
+        else
+        {
+            LoadLevel(_level + 1);
+        }
+    }
+
+    public Timer getTimer() { return timer; }
 }

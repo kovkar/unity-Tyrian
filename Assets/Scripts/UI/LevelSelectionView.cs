@@ -9,9 +9,9 @@ public class LevelSelectionView : AView
     [SerializeField] private Button backButton;
     public override void Initialize()
     {
-        loadLevel1.onClick.AddListener(() => SceneManager.LoadScene("Level1"));
-        loadLevel2.onClick.AddListener(() => SceneManager.LoadScene("Level2"));
-        loadLevel3.onClick.AddListener(() => SceneManager.LoadScene("Level3"));
+        loadLevel1.onClick.AddListener(() => GameManager.Instance.StartGame(1));
+        loadLevel2.onClick.AddListener(() => GameManager.Instance.StartGame(2));
+        loadLevel3.onClick.AddListener(() => GameManager.Instance.StartGame(3));
         backButton.onClick.AddListener(() => UIManager.ShowLast());
     }
 

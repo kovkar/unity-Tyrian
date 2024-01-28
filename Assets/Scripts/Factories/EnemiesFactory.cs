@@ -49,8 +49,9 @@ public class EnemiesFacotry : MonoBehaviour
 
         if (_spawnDelay > 0.0f | enemiesCount >= maxEnemies) { return; }
 
-        float x = Random.Range(EnvironmentProps.Instance.minX() + enemyPrefab.transform.localScale.x / 2 ,
-                               EnvironmentProps.Instance.maxX() - enemyPrefab.transform.localScale.x / 2) ;
+        float x = EnvironmentProps.Instance.maxX() - enemyPrefab.transform.localScale.x / 2;
+        /*float x = Random.Range(EnvironmentProps.Instance.minX() + enemyPrefab.transform.localScale.x / 2 ,
+                               EnvironmentProps.Instance.maxX() - enemyPrefab.transform.localScale.x / 2) ;*/
 
         float z = EnvironmentProps.Instance.maxZ() + enemyPrefab.transform.localScale.z / 2;
 

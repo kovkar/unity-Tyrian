@@ -17,7 +17,7 @@ using UnityEngine;
 public class Actor : MonoBehaviour
 {
     /// <value>Attribute <c>health</c> represents <c>Actor</c>'s current health value.</value>
-    private int health;
+    private float health;
 
     [Header("Actor settings")]
 
@@ -30,14 +30,14 @@ public class Actor : MonoBehaviour
 
     [Header("Refferences")]
     /// <value>Attribute healthBar is refference to bar displaying <c>Actor</c>'s health</value>
-    [SerializeField] private Bar healthBar = null;
+    [SerializeField] protected Bar healthBar = null;
 
 
     // **************** PUBLIC METHODS **************** //
 
     public int getDamage() { return damage; }
 
-    public int getHealth() { return health; }
+    public float getHealth() { return health; }
 
     public int getMaxHealth() { return maxHealth; }
 
@@ -68,12 +68,13 @@ public class Actor : MonoBehaviour
     protected virtual void OnCollisionEnter(Collision collision)
     {
         // check if other game object is Actor
-        if (!TryGetComponent<Actor>(out Actor otherActor))
+        if (!collision.gameObject.TryGetComponent<Actor>(out Actor otherActor))
             Debug.LogWarning($"{otherActor.name} is not an Actor, but collision with {gameObject.name} is allowed by matrix.");
         else
         {
             // update health
             TakeDamage(otherActor.damage);
+            Debug.Log($"{gameObject.name} took {otherActor.damage} damage from {otherActor.name}");
         }
     }
 
@@ -85,10 +86,10 @@ public class Actor : MonoBehaviour
     /// Calls </c>SelfDestroy<c> method if health is non-positive.
     /// </summary>
     /// <param name="damage">value to substract from <c>health</c></param>
-    protected virtual void TakeDamage(int damage)
+    protected virtual void TakeDamage(float damage)
     {
         health -= damage;
-        healthBar?.DecreaseBy( (float) damage / maxHealth);
+        healthBar?.DecreaseBy( damage / maxHealth);
         if (health <= 0) SelfDestroy();
     }
 

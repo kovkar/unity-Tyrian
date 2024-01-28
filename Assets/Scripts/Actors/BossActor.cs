@@ -4,11 +4,16 @@
 /// </summary>
 public class BossActor : Actor
 {
+    private void Start()
+    {
+        healthBar = GameManager.Instance.bossHealthbar;
+    }
+
     // **************** OVERRIDE METHODS ****************//
 
     protected override void SelfDestroy()
     {
-        // game ends
+        GameManager.Instance.EndGame(true);
         return;
     }
 }

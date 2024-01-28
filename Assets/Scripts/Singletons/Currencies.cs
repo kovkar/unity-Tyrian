@@ -17,10 +17,13 @@ public class Currencies : MonoBehaviour
 
     [Header("Refferecnes")]
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI scoreThreshold;
     [SerializeField] private TextMeshProUGUI creditsText;
 
     private readonly int[] SCORE_COEFS = { 1, 5, 10 };
     private readonly int[] CREDITS_COEFS = { 1, 1, 2 };
+
+    private int threshold;
 
     private enum COLLISION_TYPE
     {
@@ -68,20 +71,29 @@ public class Currencies : MonoBehaviour
         int scoreIncrement = SCORE_COEFS[(int) type] * other.getDamage();
         int creditsIncreemnt = CREDITS_COEFS[(int) type] * other.getDamage();
 
-        Score += scoreIncrement;
-        Credits += creditsIncreemnt;
-
-        incrementScore(scoreIncrement);
-        incrementCredits(creditsIncreemnt);
+        IncrementScore(scoreIncrement);
+        IncrementCredits(creditsIncreemnt);
     }
 
-    public void incrementScore(float value) 
+    public void IncrementScore(int value) 
     {
-        scoreText.text = (Score + value).ToString();
+        Score += value;
+        scoreText.text = Score.ToString();
+        if (Score >= threshold)
+        {
+            GameManager.Instance.LoadNextLevel();
+        }
     }
 
-    public void incrementCredits(float value)
+    public void IncrementCredits(int value)
     {
+        Credits += value;
         creditsText.text = (Score + value).ToString();
+    }
+
+    public void SetScoreThreshold(int value)
+    {
+        threshold = value;
+        scoreThreshold.text = $"/{value}";
     }
 }

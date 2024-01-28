@@ -35,16 +35,12 @@ public class Boss : MonoBehaviour
     [Header("Refferences")]
     /// <value><c>Actor</c> be seeked by boss</value>
     [SerializeField] Actor  target;
-    /// <value><c>Cannon</c> to be used (set active) during power attack</value>
-    [SerializeField] Cannon powerCannon;
+    /// <value><c>PowerCannon</c> whose <c>ProjectileShower</c> function will be called in power attack</value>
+    [SerializeField] PowerCannon powerCannon;
     /// <value><c>Cannon</c> to be used (set active) during long range attack</value>
     [SerializeField] Cannon longCannon;
     /// <value><c>Cannon</c> to be used (set active) during short range attack</value>
     [SerializeField] Cannon shortCannon;
-    /// <value><c>Bar</c> showing cooldown until power attack ready</value>
-    [SerializeField] Bar    powerCannonCooldownBar;
-    /// <value><c>Bar</c> showing temperature of <c>longCannon</c></value>
-    [SerializeField] Bar    longCannonTemperatureBar;
 
     [Header("Power attack settings")]
     /// <value><c>Boss</c> max speed when power attack is ready</value>
@@ -83,6 +79,8 @@ public class Boss : MonoBehaviour
     private bool isPowerAttackready = false;
     /// <value><c>IsLongCannonReady</c> property backfield</value>
     private bool isLongCannonReady  = true;
+    /// <value><c>IsTargetInPowerRange</c> property backfield</value>
+    private bool isTargetInPowerRange = false;
 
 
     /// <summary>
@@ -103,6 +101,15 @@ public class Boss : MonoBehaviour
         set { isLongCannonReady = value; OnPropertyChanged(); }
     }
 
+    /// <summary>
+    /// One of the properties defining boss current <c>State</c>
+    /// </summary>
+    private bool IsTargetInPowerRange
+    {
+        get => isTargetInPowerRange;
+        set { isTargetInPowerRange = value; OnPropertyChanged(); }
+    }
+
 
     // **************** VARIABLES **************** //
 
@@ -115,22 +122,29 @@ public class Boss : MonoBehaviour
     /// <value>current temperature of <c>longCannon</c></value>
     private float _temperature = 0;
     /// <value>boss valocity</value>
-    private Vector3 _velocity = Vector3.zero;
+    public Vector3 _velocity { get; private set; } = Vector3.zero;
     /// <value>time in seconds until power attack is ready</value>
     private float _powerCooldown;
 
+    /// <value><c>Bar</c> showing cooldown until power attack ready</value>
+    private Bar powerCannonCooldownBar;
+    /// <value><c>Bar</c> showing temperature of <c>longCannon</c></value>
+    private Bar longCannonTemperatureBar;
 
     // **************** UNITY **************** //
 
     private void Start()
     {
         OnPropertyChanged();
-        _powerCooldown = powerCooldown;  
+        _powerCooldown = powerCooldown;
+        powerCannonCooldownBar = GameManager.Instance.powerCannonCooldownBar;
+        longCannonTemperatureBar = GameManager.Instance.longCannonTemperatureBar;
     }
 
     private void Update()
     {
         UpdatePosition();
+        // UpdateRotation();
         UpdateTemperature();
         UpdatePowerCooldown();
     }
@@ -164,6 +178,18 @@ public class Boss : MonoBehaviour
         // clip into play area
         transform.position = props.IntoArea(new_pos, 0, 0);
     }
+
+/*    private void UpdateRotation()
+    {
+        if (_state is State.LONG_RANGE_ATTACK)
+        {
+            transform.rotation = Quaternion.LookRotation(new Vector3(0, 0, -1));
+        }
+        else if (_velocity != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(_velocity);
+        }
+    }*/
 
     /// <summary>
     /// Updates <c>_temperature</c> of long cannon based on <c>_state</c> and checks if not overheated.
@@ -218,7 +244,7 @@ public class Boss : MonoBehaviour
         if (_powerCooldown <= 0)
         {
             IsPowerAttackReady = true;
-            _ = PowerAttackAsync();
+            _ = PowerAttackSeekAsync();
         }
     }
 
@@ -241,15 +267,24 @@ public class Boss : MonoBehaviour
     {
         if (IsPowerAttackReady)
         {
-            _state = State.POWER_ATTACK;
+            if (IsTargetInPowerRange)
+            {
+                _state = State.POWER_ATTACK;
+            }
+            else
+            {
+                _state = State.POWER_ATTACK_SEEK;
+            }
             return;
         }
         if (IsLongCannonReady)
         {
             _state = State.LONG_RANGE_ATTACK;
-            return;
         }
-        _state = State.SHORT_RANGE_ATTACK;
+        else
+        {
+            _state = State.SHORT_RANGE_ATTACK;
+        }
     }
 
     /// <summary>
@@ -287,8 +322,8 @@ public class Boss : MonoBehaviour
     /// </summary>
     private void ChangeCannons()
     {
-        powerCannon?.gameObject.SetActive(_state is State.POWER_ATTACK);
-        longCannon?.gameObject.SetActive(_state is State.LONG_RANGE_ATTACK);
+        powerCannon?.gameObject.SetActive(_state == State.POWER_ATTACK);
+        longCannon?.gameObject.SetActive(_state == State.LONG_RANGE_ATTACK);
     }
 
     /// <summary>
@@ -302,11 +337,23 @@ public class Boss : MonoBehaviour
         IsLongCannonReady = true;
     }
 
+    private async Task PowerAttackSeekAsync()
+    {
+        // seek until boss is close enough to perform power attack
+        while (Vector3.Distance(target.transform.position, transform.position) > minPowerRange)
+        {
+            await Task.Delay(250);
+        }
+        IsTargetInPowerRange = true;
+        _ = PowerAttackAsync();
+
+    }
+
     private async Task PowerAttackAsync()
     {
-        // TO DO: power attack
-        await Task.Delay(3000);
+        await powerCannon.ProjectileShowerAsync();
         _powerCooldown = powerCooldown;
         IsPowerAttackReady = false;
+        IsTargetInPowerRange = false;
     }
 }

@@ -17,9 +17,13 @@ public class ProjectileController : MonoBehaviour
     /// <param name="speed">projectile speed</param>
     /// <param name="direction">projectile moving direction</param>
     public void Set(float speed, Vector3 direction)
-    {
+    {   
+        // set speed and direction
         _speed = speed;
         _direction = direction;
+
+        // rotate projectile to traveling direction
+        transform.rotation = Quaternion.LookRotation(direction);
     }
 
 
