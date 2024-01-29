@@ -16,8 +16,8 @@ TagManager:
   - AlienShip
   - AlienProjectile
   - Meteor
-  - 
-  - 
+  - ColliderCannon
+  - Camera
   - 
   - 
   - 

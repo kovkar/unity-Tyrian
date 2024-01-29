@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ShipContoller : MonoBehaviour
@@ -26,6 +23,7 @@ public class ShipContoller : MonoBehaviour
 
     private void updateShipPosition()
     {
+
         Vector3 pos = transform.position;
 
         if (Input.GetKey(KeyCode.A))

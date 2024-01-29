@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+using System;
 using UnityEngine;
 
 public class EnvironmentProps : MonoBehaviour
@@ -29,6 +27,14 @@ public class EnvironmentProps : MonoBehaviour
 
     // Update is called once per frame
     void Update() {}
+
+    public Vector3 IntoArea(Vector3 pos, float sizeX, float sizeZ)
+    {
+        pos.x = Math.Clamp(pos.x, minX() + sizeX * 0.5f, maxX() - sizeX * 0.5f);
+        pos.z = Math.Clamp(pos.z, minZ() + sizeZ * 0.5f, maxZ() - sizeZ * 0.5f);
+        return pos;
+    }
+
 
     // Destroy meteors that leaves the play area
     void OnTriggerExit(Collider other) { Destroy(other.gameObject); }

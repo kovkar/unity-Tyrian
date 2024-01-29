@@ -1,36 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+///  Subclass of <c>Actor</c> class representing enemies.
+///  Overrides <name>OnCollisionEnter</name> to update currencies.
+///  Overrides <name>SelfDestroy</name> to update enemy count.
+/// </summary>
 public class EnemyActor : Actor
 {
-    private const int PLAYER_SHIP_LAYER = 6;
+    private static Currencies currencies;
 
-    public override void OnCollisionEnter(Collision collision)
+    // **************** UNITY METHODS **************** //
+    void Start()
     {
-        this.updateCurrencies(collision);
-        base.OnCollisionEnter(collision);
+        currencies = Currencies.Instance;
     }
 
-    public override void SelfDestroy()
+    // **************** OVERRIDE METHODS **************** //
+
+    protected override void OnCollisionEnter(Collision collision)
+    {
+        currencies?.ProcessCollision(this, collision);
+        base.OnCollisionEnter(collision);
+
+    }
+
+    protected override void SelfDestroy()
     {
         EnemiesFacotry.Instance.decreaseEnemyCountByOne();
         base.SelfDestroy();
-    }
-
-    private void updateCurrencies(Collision collision)
-    {
-        if (Currencies.Instance == null) { return; }
-
-        GameObject otherGO = collision.gameObject;
-        Actor otherActor = otherGO.GetComponent<Actor>();
-
-        if (otherActor == null) { return; }
-
-        int healthTaken = otherActor.getDamage();
-        bool isCrash = otherGO.gameObject.layer == PLAYER_SHIP_LAYER;
-        bool isKill = healthTaken >= this.getHealth();
-
-        Currencies.Instance.OnCollisionCurrencies(healthTaken, isCrash, isKill);
     }
 }
