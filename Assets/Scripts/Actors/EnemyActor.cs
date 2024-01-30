@@ -7,12 +7,12 @@ using UnityEngine;
 /// </summary>
 public class EnemyActor : Actor
 {
-    private static Currencies currencies;
+    private static ScoreManager currencies;
 
     // **************** UNITY METHODS **************** //
     void Start()
     {
-        currencies = Currencies.Instance;
+        currencies = ScoreManager.Instance;
     }
 
     // **************** OVERRIDE METHODS **************** //

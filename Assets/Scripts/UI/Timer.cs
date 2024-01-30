@@ -20,6 +20,7 @@ public class Timer : MonoBehaviour
 
     public void StartTimer()
     {
+        if (!paused) return;
         paused = false;
         _ = run();
     }

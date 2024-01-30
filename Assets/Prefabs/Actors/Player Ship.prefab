@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3413449548986365465}
   - component: {fileID: 3107884256964943295}
   - component: {fileID: 2663585265645072982}
+  - component: {fileID: 4692329890830264476}
   m_Layer: 6
   m_Name: Player Ship
   m_TagString: Untagged
@@ -68,7 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 20
-  maxHealth: 30
+  maxHealth: 100
   healthBar: {fileID: 0}
 --- !u!54 &3107884256964943295
 Rigidbody:
@@ -118,6 +119,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.75, y: 0.68, z: 4.24}
   m_Center: {x: 0, y: 0, z: 0.37}
+--- !u!111 &4692329890830264476
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086077015390543823}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 02aae29686d54224d923a4a8ed4cad0d, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 02aae29686d54224d923a4a8ed4cad0d, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &2008627733051236894
 GameObject:
   m_ObjectHideFlags: 0
@@ -9820,7 +9837,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectile: {fileID: 3142517242013959076, guid: 6857f07b4dd0a2641973ad821b758e99, type: 3}
-  shotSound: {fileID: 0}
+  shotSound: {fileID: 597973203950833934}
   cadence: 4
   projSpeed: 25
   firstShotDelay: 0

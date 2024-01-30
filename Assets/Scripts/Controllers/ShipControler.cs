@@ -6,22 +6,12 @@ public class ShipContoller : MonoBehaviour
 
     public Bounds shipArea;
 
-    private ParticleSystem mainThrusterL;
-    private ParticleSystem mainThrusterR;
-
-    void Start() 
-    {
-        mainThrusterL = this.transform.Find("main thruster L").GetComponent<ParticleSystem>();
-        mainThrusterR = this.transform.Find("main thruster R").GetComponent<ParticleSystem>();
-    }
-
     void Update()
     {
-        updateShipPosition();
-        ManageThrusters();
+        UpdateShipPosition();
     }
 
-    private void updateShipPosition()
+    private void UpdateShipPosition()
     {
 
         Vector3 pos = transform.position;
@@ -59,19 +49,5 @@ public class ShipContoller : MonoBehaviour
         else if (result.z + dz > shipArea.max.z) { result.z = shipArea.max.z - dz; }
 
         return result;
-    }
-
-    private void ManageThrusters() 
-    {
-        if (Input.GetKeyDown (KeyCode.S))
-        {
-            this.mainThrusterL.Stop();
-            this.mainThrusterR.Stop();
-        }
-        if (Input.GetKeyUp(KeyCode.S))
-        {
-            this.mainThrusterL.Play();
-            this.mainThrusterR.Play();
-        }
     }
 }

@@ -8,7 +8,7 @@ public class ColorChangingBar : BasicBar
 
     private Image img;
 
-    private void Start()
+    private void Awake()
     {
         img = fill.GetComponent<Image>();
         if (img is null) Debug.LogError($"{fill} has no Image component to change color!");

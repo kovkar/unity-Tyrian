@@ -127,9 +127,9 @@ public class Boss : MonoBehaviour
     private float _powerCooldown;
 
     /// <value><c>Bar</c> showing cooldown until power attack ready</value>
-    private Bar powerCannonCooldownBar;
+    private Bar powerCooldownBar;
     /// <value><c>Bar</c> showing temperature of <c>longCannon</c></value>
-    private Bar longCannonTemperatureBar;
+    private Bar temperatureBar;
 
     // **************** UNITY **************** //
 
@@ -137,14 +137,13 @@ public class Boss : MonoBehaviour
     {
         OnPropertyChanged();
         _powerCooldown = powerCooldown;
-        powerCannonCooldownBar = GameManager.Instance.powerCannonCooldownBar;
-        longCannonTemperatureBar = GameManager.Instance.longCannonTemperatureBar;
+        powerCooldownBar = HUDManager.Instance.BossPowerCooldownBar;
+        temperatureBar = HUDManager.Instance.BossCannonTemperatureBar;
     }
 
     private void Update()
     {
         UpdatePosition();
-        // UpdateRotation();
         UpdateTemperature();
         UpdatePowerCooldown();
     }
@@ -179,18 +178,6 @@ public class Boss : MonoBehaviour
         transform.position = props.IntoArea(new_pos, 0, 0);
     }
 
-/*    private void UpdateRotation()
-    {
-        if (_state is State.LONG_RANGE_ATTACK)
-        {
-            transform.rotation = Quaternion.LookRotation(new Vector3(0, 0, -1));
-        }
-        else if (_velocity != Vector3.zero)
-        {
-            transform.rotation = Quaternion.LookRotation(_velocity);
-        }
-    }*/
-
     /// <summary>
     /// Updates <c>_temperature</c> of long cannon based on <c>_state</c> and checks if not overheated.
     /// Controlls <c>powerCannonCooldownBar</c>.
@@ -216,7 +203,7 @@ public class Boss : MonoBehaviour
         _temperature += deltaTemp;
 
         // update temperature bar
-        longCannonTemperatureBar?.SetTo(_temperature / maxTemperature);
+        temperatureBar?.SetTo(_temperature / maxTemperature);
 
         // check for overheat
         if (_temperature >= maxTemperature)
@@ -238,7 +225,7 @@ public class Boss : MonoBehaviour
         _powerCooldown -= Time.deltaTime;
 
         // update power cooldown bar
-        powerCannonCooldownBar?.SetTo(1 - (_powerCooldown / powerCooldown));
+        powerCooldownBar?.SetTo(1 - (_powerCooldown / powerCooldown));
 
         // check if cooldown over == power attack ready
         if (_powerCooldown <= 0)
