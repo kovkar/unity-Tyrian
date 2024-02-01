@@ -41,16 +41,34 @@ public class GameManager : MonoBehaviour
     /// <param name="victory"><true> if player wins.</param>
     public void EndGame(bool victory)
     {
-        //HUDManager.Tim.StopTimer();
+        GameTimer.StopTimer();
         if (victory)
         {
             SceneManager.LoadScene("Victory");
+            UIManager.Show<VictoryView>();
         }
         else
         {
             SceneManager.LoadScene("Loss");
+            UIManager.Show<DefeatView>();
         }
         HUDManager.Instance.Hide(HUDManager.Layer.ALL);
+        GameTimer.ResetTimer();
+    }
+
+    /// <summary>
+    /// Resets game.
+    /// </summary>
+    public void ResetGame()
+    {
+        // destroy dont destroy on load objects
+        Destroy(HUDManager.Instance.gameObject);
+        Destroy(LevelManager.Instance.gameObject);
+        Destroy(ScoreManager.Instance.gameObject);
+        Destroy(UIManager.Instance.gameObject);
+        Destroy(this.gameObject);
+        // load entry scene
+        SceneManager.LoadScene("Menus");
     }
 
 

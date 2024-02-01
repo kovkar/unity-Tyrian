@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour
             // Destroy 'this' object as there exist another instance
             Destroy(this.gameObject);
         }
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
