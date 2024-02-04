@@ -33,8 +33,6 @@ public class Boss : MonoBehaviour
     // **************** SETTINGS **************** //
 
     [Header("Refferences")]
-    /// <value><c>Actor</c> be seeked by boss</value>
-    [SerializeField] Actor  target;
     /// <value><c>PowerCannon</c> whose <c>ProjectileShower</c> function will be called in power attack</value>
     [SerializeField] PowerCannon powerCannon;
     /// <value><c>Cannon</c> to be used (set active) during long range attack</value>
@@ -127,24 +125,26 @@ public class Boss : MonoBehaviour
     private float _powerCooldown;
 
     /// <value><c>Bar</c> showing cooldown until power attack ready</value>
-    private Bar powerCannonCooldownBar;
+    private Bar powerCooldownBar;
     /// <value><c>Bar</c> showing temperature of <c>longCannon</c></value>
-    private Bar longCannonTemperatureBar;
+    private Bar temperatureBar;
+
+    private Transform target;
 
     // **************** UNITY **************** //
 
     private void Start()
     {
+        target = GameManager.Instance.Ship;
         OnPropertyChanged();
         _powerCooldown = powerCooldown;
-        powerCannonCooldownBar = GameManager.Instance.powerCannonCooldownBar;
-        longCannonTemperatureBar = GameManager.Instance.longCannonTemperatureBar;
+        powerCooldownBar = HUDManager.Instance.BossPowerCooldownBar;
+        temperatureBar = HUDManager.Instance.BossCannonTemperatureBar;
     }
 
     private void Update()
     {
         UpdatePosition();
-        // UpdateRotation();
         UpdateTemperature();
         UpdatePowerCooldown();
     }
@@ -157,13 +157,15 @@ public class Boss : MonoBehaviour
     /// </summary>
     private void UpdatePosition() 
     {
+        if (target is null) return;
+
         var dt    = Time.deltaTime;
         var pos   = gameObject.transform.position;
         var utils = GameUtils.Instance;
         var props = EnvironmentProps.Instance;
 
         // get position to seek
-        var seekPos = target.gameObject.transform.position;
+        var seekPos = target.position;
         if (_state is State.LONG_RANGE_ATTACK)
         {
             seekPos.z = EnvironmentProps.Instance.maxZ();
@@ -178,18 +180,6 @@ public class Boss : MonoBehaviour
         // clip into play area
         transform.position = props.IntoArea(new_pos, 0, 0);
     }
-
-/*    private void UpdateRotation()
-    {
-        if (_state is State.LONG_RANGE_ATTACK)
-        {
-            transform.rotation = Quaternion.LookRotation(new Vector3(0, 0, -1));
-        }
-        else if (_velocity != Vector3.zero)
-        {
-            transform.rotation = Quaternion.LookRotation(_velocity);
-        }
-    }*/
 
     /// <summary>
     /// Updates <c>_temperature</c> of long cannon based on <c>_state</c> and checks if not overheated.
@@ -216,7 +206,7 @@ public class Boss : MonoBehaviour
         _temperature += deltaTemp;
 
         // update temperature bar
-        longCannonTemperatureBar?.SetTo(_temperature / maxTemperature);
+        temperatureBar?.SetTo(_temperature / maxTemperature);
 
         // check for overheat
         if (_temperature >= maxTemperature)
@@ -238,7 +228,7 @@ public class Boss : MonoBehaviour
         _powerCooldown -= Time.deltaTime;
 
         // update power cooldown bar
-        powerCannonCooldownBar?.SetTo(1 - (_powerCooldown / powerCooldown));
+        powerCooldownBar?.SetTo(1 - (_powerCooldown / powerCooldown));
 
         // check if cooldown over == power attack ready
         if (_powerCooldown <= 0)
@@ -340,7 +330,7 @@ public class Boss : MonoBehaviour
     private async Task PowerAttackSeekAsync()
     {
         // seek until boss is close enough to perform power attack
-        while (Vector3.Distance(target.transform.position, transform.position) > minPowerRange)
+        while (Vector3.Distance(target.position, transform.position) > minPowerRange)
         {
             await Task.Delay(250);
         }

@@ -1,7 +1,3 @@
-using OpenCover.Framework.Model;
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
 using UnityEngine;
 
 public class MeteorsFactory : MonoBehaviour

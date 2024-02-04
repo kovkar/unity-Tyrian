@@ -29,6 +29,8 @@ public class KeyCannon : Cannon
     {
         if (Input.GetKeyDown(shootKey))
         {
+
+            if (shooting is not null) StopCoroutine(shooting);
             shooting = Shooting();
             StartCoroutine(shooting);
         }

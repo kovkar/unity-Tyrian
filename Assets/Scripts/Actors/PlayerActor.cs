@@ -8,7 +8,8 @@ public class PlayerActor : Actor
 {
     private void Start()
     {
-        healthBar = GameManager.Instance.playerHealthbar;
+        healthBar = HUDManager.Instance.PlayerHealthBar;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void OnCollisionStay(UnityEngine.Collision collision)
