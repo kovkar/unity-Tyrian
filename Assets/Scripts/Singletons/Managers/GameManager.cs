@@ -12,10 +12,13 @@ public class GameManager : MonoBehaviour
     [Header("Refferences")]
     [SerializeField] private Animation shipIntro;
 
+    private ShipContoller ship;
 
     /***************************** PROPERTIES ********************************/
 
     public Timer GameTimer { get; private set; }
+
+    public Transform Ship { get => ship.transform; set { } }
 
     /***************************** PUBLIC METHODS ****************************/
 
@@ -33,6 +36,7 @@ public class GameManager : MonoBehaviour
         await Task.Delay((int)(animLength * 1000));
         LevelManager.Instance.Load(startingLevel - 1);
         GameTimer.StartTimer();
+        ship.enabled = true;
     }
 
     /// <summary>
@@ -41,6 +45,7 @@ public class GameManager : MonoBehaviour
     /// <param name="victory"><true> if player wins.</param>
     public void EndGame(bool victory)
     {
+        ship.gameObject.SetActive(false);
         GameTimer.StopTimer();
         if (victory)
         {
@@ -66,6 +71,7 @@ public class GameManager : MonoBehaviour
         Destroy(LevelManager.Instance.gameObject);
         Destroy(ScoreManager.Instance.gameObject);
         Destroy(UIManager.Instance.gameObject);
+        Destroy(ship.gameObject);
         Destroy(this.gameObject);
         // load entry scene
         SceneManager.LoadScene("Menus");
@@ -84,6 +90,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         GameTimer = GetComponent<Timer>();
+        ship = shipIntro.gameObject.GetComponent<ShipContoller>();
+        ship.enabled = false;
         DontDestroyOnLoad(this);
     }
 }

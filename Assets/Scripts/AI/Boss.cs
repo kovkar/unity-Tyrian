@@ -33,8 +33,6 @@ public class Boss : MonoBehaviour
     // **************** SETTINGS **************** //
 
     [Header("Refferences")]
-    /// <value><c>Actor</c> be seeked by boss</value>
-    [SerializeField] Actor  target;
     /// <value><c>PowerCannon</c> whose <c>ProjectileShower</c> function will be called in power attack</value>
     [SerializeField] PowerCannon powerCannon;
     /// <value><c>Cannon</c> to be used (set active) during long range attack</value>
@@ -131,10 +129,13 @@ public class Boss : MonoBehaviour
     /// <value><c>Bar</c> showing temperature of <c>longCannon</c></value>
     private Bar temperatureBar;
 
+    private Transform target;
+
     // **************** UNITY **************** //
 
     private void Start()
     {
+        target = GameManager.Instance.Ship;
         OnPropertyChanged();
         _powerCooldown = powerCooldown;
         powerCooldownBar = HUDManager.Instance.BossPowerCooldownBar;
@@ -156,13 +157,15 @@ public class Boss : MonoBehaviour
     /// </summary>
     private void UpdatePosition() 
     {
+        if (target is null) return;
+
         var dt    = Time.deltaTime;
         var pos   = gameObject.transform.position;
         var utils = GameUtils.Instance;
         var props = EnvironmentProps.Instance;
 
         // get position to seek
-        var seekPos = target.gameObject.transform.position;
+        var seekPos = target.position;
         if (_state is State.LONG_RANGE_ATTACK)
         {
             seekPos.z = EnvironmentProps.Instance.maxZ();
@@ -327,7 +330,7 @@ public class Boss : MonoBehaviour
     private async Task PowerAttackSeekAsync()
     {
         // seek until boss is close enough to perform power attack
-        while (Vector3.Distance(target.transform.position, transform.position) > minPowerRange)
+        while (Vector3.Distance(target.position, transform.position) > minPowerRange)
         {
             await Task.Delay(250);
         }

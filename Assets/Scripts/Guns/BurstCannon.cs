@@ -17,8 +17,9 @@ public class BurstCannon : Cannon
     [SerializeField] private float projSpeed = 5.0f;
     /// <value>firstShotDelay</value> Delay before first projectile is fired after <c>shootKey</c> is pressed.
     [SerializeField] private float firstShotDelay = 1;
+
     /// <value>direction</value> shooting direction of gun
-    [SerializeField] private Transform target;
+    private Transform target;
 
     /// refference to running BurstShooting() corutine
     private IEnumerator shooting;
@@ -28,6 +29,7 @@ public class BurstCannon : Cannon
 
     private void Start()
     {
+        target = GameManager.Instance.Ship;
         shooting = BurstShooting();
         StartCoroutine(shooting);
     }
